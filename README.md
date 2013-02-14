@@ -1,0 +1,4 @@
+AED
+===
+
+Automatic Emotion Detector
