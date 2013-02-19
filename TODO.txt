@@ -1,0 +1,9 @@
+TODO:
+
+1. Determine what features to use besides just pixel intensities. We might want to look into using the SURF algorithm to extract all the important features of the image, and then use PCA to extract the most important dimensions of that data. 
+
+2. Determine how many images we want to gather and gather them. 1000? 5000? 10000? Or just gather until we can't gather any more?
+
+3. Split up workload.
+
+4. Figure out how to extract faces from any pose and orient them to face forward.  There should be some algorithms out there that can do this for us.
