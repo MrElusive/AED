@@ -1,4 +1,16 @@
+# Python extension
 *.py[cod]
+
+# Other extension
+.*.swp
+Thumbs.db
+
+# C extensions
+*.so
+*.o
+
+# Specific files/folders
+csv_output
 
 # C extensions
 *.so
