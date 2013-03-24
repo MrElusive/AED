@@ -1,0 +1,314 @@
+
+#include "decisionTreeNode.h"
+
+DecisionTreeNode::DecisionTreeNode(Matrix& features, Matrix& labels)
+{
+    this->isHead = true;
+    allNodes = new vector<DecisionTreeNode*>();
+    this->name = "head";
+    init(features,labels);
+}
+
+DecisionTreeNode::DecisionTreeNode(Matrix& features, Matrix& labels,
+                                 vector<DecisionTreeNode*>* allNodes)
+{
+    this->isHead = false;
+    this->allNodes = allNodes;
+    init(features,labels);
+}
+
+void DecisionTreeNode::init(Matrix& features, Matrix& labels)
+{
+    this->features = features;
+    this->labels = labels;
+    this->isPruned = false;
+    allNodes->push_back(this);
+
+    //cout<<"Matrix at current split:"<<endl;
+    //cout<<features;
+    //Decide if we need to split further
+    if(shouldWeContinueSplitting())
+    {
+        this->split = getIndexOfNextBestSplit();
+        //cout<<"Splitting on attribute "<<features.attrName(split)<<endl;
+
+        vector<double> values = features.getValues(split);
+        for(size_t i = 0; i<values.size(); i++)
+        {
+            /*cout<<"Working with value "<<values[i]<<endl;
+            if(values[i] != UNKNOWN_VALUE)
+                cout<<"\t"<<features.attrValue(split,values[i])<<endl;;*/
+            double value = values[i];
+            Matrix newFeatures = features;  //copies the metadata, but not data
+            newFeatures.removeAttr(split);  //remove the feature we're splitting on
+            Matrix newLabels = labels;
+
+            for(size_t r=0;r<features.rows();r++)
+            {
+                vector<double> row = features[r];
+                if(row[split]==value)
+                {
+                    row.erase(row.begin()+split);
+                    newFeatures.copyRow(row);
+                    newLabels.copyRow(labels[r]);
+                }
+            }
+            //cout<<"Matrix for value "<<i<<endl<<newFeatures;
+            DecisionTreeNode* child = new DecisionTreeNode(newFeatures,newLabels,
+                                                            allNodes);
+           
+            //set the child's name to its attribute value
+            if(values[i] == UNKNOWN_VALUE)
+                child->setName("?");
+            else
+                child->setName(features.attrValue(split,values[i]));
+            children.push_back(child);
+            childrenValues.push_back(value);
+        }
+    }
+}
+
+DecisionTreeNode::~DecisionTreeNode()
+{
+    //remove yourself from all nodes
+    for(size_t i=0;i<allNodes->size();i++)
+        if(allNodes->at(i) == this)
+            allNodes->erase(allNodes->begin() + i);
+
+    //delete your kids
+    for(size_t i=0;i<children.size();i++)
+        delete children[i];
+
+    if(isHead)
+        delete allNodes;
+}
+
+double DecisionTreeNode::predict(vector<double> features)
+{
+    if(children.size()>0 && !isPruned)//if I'm not a leaf
+    {
+        double branchValue = features[split];
+        vector<double> featuresCopy = features;
+        featuresCopy.erase(featuresCopy.begin()+split);
+        //find the child with that value
+        for(size_t i=0;i<childrenValues.size();i++)
+        {
+            if(childrenValues[i] == branchValue)
+                return children[i]->predict(featuresCopy);
+        }
+    }
+    else
+    {
+        return labels.mostCommonValue(0);
+    }
+    return labels.mostCommonValue(0);
+}
+
+bool DecisionTreeNode::shouldWeContinueSplitting()
+{
+    //At least for now I'm planning on doing the complete tree and pruning
+    //So we keep splitting until all of the labels are the same or we run
+    //out of attributes
+    //cout<<"Number of elements = "<<features.rows()<<endl;
+    return (labels.getValues(0).size() != 1) &&
+            (features[0].size()!=0);
+}
+
+#ifdef ID3
+size_t DecisionTreeNode::getIndexOfNextBestSplit()
+{
+    double maxInfoA = -1000000;
+    size_t maxInfoAIndex = 0;
+    //for each possible attribute
+    size_t size = features.rows();
+    for(size_t a=0;a<features[0].size();a++)
+    {
+        //for each possible value of the attribute
+        vector<double> values = features.getValues(a);
+        double infoA = 0;
+        //cout<<"number of values = "<<values.size()<<endl;
+        for(size_t v=0;v<values.size();v++)
+        {
+            double info = getInfoForAttr(a,values[v]);
+            //cout<<"info for value "<<values[v]<<" = "<<info<<endl;
+            size_t size_i = 0;
+            for(size_t e=0;e<features.rows();e++)
+            {
+                if(features[e][a]==values[v])
+                    size_i++;
+            }
+            infoA += info*((double)size_i)/size;
+        }
+        //cout<<"InfoA for "<<a<<" is "<<infoA<<endl;
+        if(infoA >= maxInfoA)
+        {
+            maxInfoA = infoA;
+            maxInfoAIndex = a;
+        }
+    }
+
+    return maxInfoAIndex;
+}
+#endif
+
+#ifdef LAPLACIAN
+size_t DecisionTreeNode::getIndexOfNextBestSplit()
+{
+    double bestScore = 0;
+    size_t bestAttribute = 0;
+    size_t ntotal = features.rows();
+    for(size_t a=0;a<features[0].size();a++)
+    {
+        //for each possible value of the attribute
+        vector<double> values = features.getValues(a);
+        double score = 0;
+        //cout<<"number of values = "<<values.size()<<endl;
+        for(size_t v=0;v<values.size();v++)
+        {
+            int ntotal_i = 0;
+            int nmaj_i = 0;
+            double majority = labels.mostCommonValue(0);
+            for(size_t e=0;e<features.rows();e++)
+            {
+                if(features[e][a]==values[v])
+                {
+                    ntotal_i++;
+                    if(labels[e][0]==majority)
+                        nmaj_i++;
+                }
+            }
+            double numClasses = (double)labels.getValues(0).size();
+            score += (ntotal_i/((double)ntotal))*(nmaj_i+1.0)/(ntotal_i+numClasses);
+            
+        }
+        if(score > bestScore)
+        {
+            bestScore = score;
+            bestAttribute = a;
+        }
+    }
+    return bestAttribute;
+}
+#endif
+
+#ifdef RETURN_0
+size_t DecisionTreeNode::getIndexOfNextBestSplit()
+{
+    return 0;
+}
+#endif
+
+double DecisionTreeNode::getInfoForAttr(size_t attr, double value)
+{
+    vector<double> classes = labels.getValues(0);
+    size_t total = 0;
+    double info = 0;
+
+    for(size_t e=0;e<labels.rows();e++)
+        if(features[e][attr]==value)
+            total++;
+    //cout<<"elements with attr["<<attr<<"]="<<value<<":"<<total<<endl;
+    for(size_t c=0;c<classes.size();c++)
+    {
+        int numInClass = 0;
+        for(size_t e=0;e<labels.rows();e++)
+        {
+            if(labels[e][0]==classes[c] && features[e][attr]==value)
+                numInClass++;
+        }
+        double p = ((double)numInClass)/total;
+        if(p!=0)    //log of 0 is undefined
+            info += p*(log(p)/log(2));
+    }
+
+    return info;
+}
+
+vector<DecisionTreeNode*>* DecisionTreeNode::getAllNodes()
+{
+    return allNodes;
+}
+
+bool DecisionTreeNode::isLeaf()
+{
+    return children.size() == 0;
+}
+
+void DecisionTreeNode::setPruned(bool pruned)
+{
+    this->isPruned = pruned;
+}
+
+void DecisionTreeNode::reallyPrune()
+{
+    //just delete all of your children
+    for(size_t i=0;i<children.size();i++)
+    {
+        delete children[i];
+    }
+    children.clear();
+}
+
+void DecisionTreeNode::writeTree(ofstream& out, int layers)
+{
+    if(layers == 0)
+        return;
+
+    if(this->isHead)
+    {
+        out<<"digraph DecisionTree"<<"{"<<endl;
+        out<<"\tgraph [ordering = \"out\"];"<<endl;
+    }
+
+    //create label
+    stringstream label;
+    //show classes
+    vector<double> classes = labels.getValues(0);
+    for(size_t i=0;i<classes.size();i++)
+    {
+        int numInClass = 0;
+        for(size_t j=0;j<labels.rows();j++)
+        {
+            if(labels[j][0] == classes[i])
+                numInClass++;
+        }
+        label<<labels.attrValue(0,classes[i]);
+        label<<":"<<numInClass
+            <<" ("<<(numInClass/(double)labels.rows())*100<<"%)\\n";
+    }
+
+    //add attribute we're splitting on
+    if(!this->isLeaf())
+        label<<"\\nSplitting on "<<features.attrName(split);
+    
+    out<<"\t"<<((long)this)<<" [label = \""<<label.str()<<"\"];"<<endl;
+
+    //draw children and transitions
+    if(layers != 1)
+    {
+        for(size_t i=0;i<children.size();i++)
+        {
+            children[i]->writeTree(out,layers-1);
+            out<<"\t"<<((long)this)<<" -> "<<((long)children[i]);
+            out<<" [label = \""<<children[i]->getName()<<"\"];"<<endl;
+        }
+    }
+
+    if(this->isHead)
+    {
+        out<<"}"<<endl;
+    }
+}
+
+void DecisionTreeNode::setName(string label)
+{
+    this->name = label;
+}
+
+string DecisionTreeNode::getName()
+{
+    return this->name;
+}
+
+
+

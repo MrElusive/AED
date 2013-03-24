@@ -1,0 +1,206 @@
+//See header for details
+#include "knnLearner.h"
+
+KNN_Learner::KNN_Learner(Rand& r, int k) : SupervisedLearner(), rand(r), k(k)
+{
+    this->callsToPredict = 0;
+    this->regressionMode = false;
+}
+KNN_Learner::~KNN_Learner()
+{
+}
+
+void KNN_Learner::train(Matrix& features, Matrix& labels)
+{
+    if(labels.valueCount(0)==0)
+        this->regressionMode = true;
+    //Make a vector to show which attributes are continuous and nominal
+    vector<int> attrTypes;
+    for(size_t a=0;a<features[0].size();a++)
+    {
+        if(features.valueCount(a) == 0) //This means its continuous
+            attrTypes.push_back(TYPE_CONTINUOUS);
+        else
+            attrTypes.push_back(TYPE_NOMINAL);
+    }
+
+    //Now make a point for each data entry
+    for(size_t r=0;r<features.rows();r++)
+    {
+        points.push_back(new KNN_Instance(features[r],attrTypes,labels[r][0]));
+    }
+#ifdef REDUCE
+    reduce();
+#endif
+
+#ifdef ALL_K
+    this->k = points.size();
+#endif
+}
+
+
+void KNN_Learner::predict(const vector<double>& features, vector<double>& labels)
+{
+    //cout<<"Predict has been called "<<++callsToPredict<<" times"<<endl;
+
+    set<pair<int,double>,compareDistance> distances;
+    for(size_t i=0;i<points.size();i++)
+    {
+        double dist = points[i]->getDistanceTo(features);
+        distances.insert(pair<int,double>(i,dist));
+
+    }
+    if(this->regressionMode)
+        labels[0] = voteRegression(distances);
+    else
+        labels[0] = voteNonRegression(distances);
+}
+
+void KNN_Learner::reduce()
+{
+    cout<<"Before pruning: has "<<points.size()<<" instances"<<endl;
+    //if its more than 2,000 nodes, cut it down to a random sample
+    if(points.size() > 2000)
+    {
+        random_shuffle ( points.begin(), points.end() );
+        points.erase(points.begin()+2000,points.end());
+    }
+
+
+    bool done = false;
+
+    //find a good tolerance for how to consider regression labels close enough
+    double tolerance = 0;
+    if(this->regressionMode)
+    {
+        double minLabel = points[0]->getLabel();
+        double maxLabel = points[0]->getLabel();
+        for(size_t i=0;i<points.size();i++)
+        {
+            double label = points[i]->getLabel();
+            if(label < minLabel)
+                minLabel = label;
+            if(label > maxLabel)
+                maxLabel = label;
+        }
+        double range = maxLabel-minLabel;
+        tolerance = range/10;
+    }
+    //cout<<"Tolerance = "<<tolerance<<endl;
+
+    while(!done)
+    {
+        random_shuffle ( points.begin(), points.end() );
+        done = true;
+        for(size_t p=0;p<points.size();p++)
+        {
+            //cout<<"label["<<p<<"] = "<<points[p]->getLabel()<<endl;
+            set<pair<int,double>,compareDistance> distances;
+            for(size_t i=0;i<points.size();i++)
+            {
+                if(i!=p)//Don't insert the point you are wanting to remove
+                {
+                    double dist = points[i]->getDistanceTo(points[p]);
+                    distances.insert(pair<int,double>(i,dist));
+                }
+
+            }
+            
+            bool removePoint = false;
+            if(this->regressionMode)
+            {
+                if(almostEqual(points[p]->getLabel(),
+                                voteNonRegression(distances),
+                                tolerance))
+                    removePoint = true;
+            }
+            else
+            {
+                if(points[p]->getLabel() == voteRegression(distances))
+                    removePoint = true;
+            }
+
+            if(removePoint)
+            {
+                //cout<<"Pruning point "<<p<<endl;
+                points.erase(points.begin()+p);
+                p--;    //since we erased, the next element to check is in the same place
+                done = false;
+            }
+        }
+        //cout<<endl<<endl;
+    }
+    cout<<"After pruning: has "<<points.size()<<" instances"<<endl;
+
+}
+
+double KNN_Learner::voteNonRegression(set<pair<int,double>,compareDistance>& distances)
+{
+    map<int,double> votes;  //the key is the label, value is number of votes
+
+    set<pair<int,double> >::iterator it=distances.begin();
+    for(int i=0;i<k;i++,it++)
+    {
+        int label = points[it->first]->getLabel();
+        double voteWeight = 1;
+#ifdef DISTANCE_WEIGHTING
+        double distance = it->second;
+        if(distance == 0)
+            return points[it->first]->getLabel();
+        voteWeight = 1/(distance*distance);
+        voteWeight *= voteWeight;
+#endif
+        //check to see if there is already a vote for that
+        if(votes.find(label) == votes.end())
+            votes[label] = voteWeight;
+        else
+            votes[label] += voteWeight;
+    }
+    
+    //Find maximum vote
+    double maxVotes=0;
+    double winningLabel = 0;
+    for(map<int,double>::iterator it=votes.begin();it!=votes.end();it++)
+    {
+        if(it->second > maxVotes)
+        {
+            maxVotes = it->second;
+            winningLabel = it->first;
+        }
+        //cout<<"votes["<<it->first<<"]="<<it->second<<endl;
+    }
+    //cout<<"Winner is "<<winningLabel<<endl<<endl;
+    return winningLabel;
+}
+
+double KNN_Learner::voteRegression(set<pair<int,double>,compareDistance>& distances)
+{
+    double totalWeights=0;
+    double sum=0;
+
+    set<pair<int,double> >::iterator it=distances.begin();
+    for(int i=0;i<k;i++,it++)
+    {
+        double weight = 1;
+#ifdef DISTANCE_WEIGHTING
+        double distance = it->second;
+        if(distance == 0)
+            return points[it->first]->getLabel();
+        weight = 1/(distance*distance);
+        weight *= weight;
+
+#endif
+        sum += points[it->first]->getLabel()*weight;
+        totalWeights += weight;
+    }
+    
+    return sum/totalWeights;
+}
+
+bool KNN_Learner::almostEqual(double n1, double n2, double tolerance)
+{
+    double diff = n1-n2;
+    return (diff<=tolerance && diff >= (-1*tolerance));
+}
+
+

@@ -1,0 +1,149 @@
+/*
+    This file contains definitions for the methods in the NeighborSet class and the
+    NeighborNode class. These classes are used to make a BST which is used to help
+    keep track of the k nearest neighbors. See knnLearner.h for details
+*/
+
+#include "knnLearner.h"
+
+/*
+    NeighborSet methods
+*/
+NeighborSet::NeighborSet(int k)
+{
+    this->size = 0;
+    this-> k = k;
+    this->head = NULL;
+    this->largestDistance = 0;
+}
+
+NeighborSet::~NeighborSet()
+{
+    if(this->head != NULL)
+        delete head;
+}
+
+void NeighborSet::addNeighbor(KNN_Instance* neighbor,double distance)
+{
+    NeighborNode* node = new NeighborNode();
+    node->instance = neighbor;
+    node->distance = distance;
+
+    if(size<k)
+    {
+        //just add it
+        if(head == NULL)
+            head = node;
+        else
+            head->add(node);
+        this->size++;
+        this->largestDistance = head->getLargestDistance();
+    }
+    else
+    {
+        if(distance < this->largestDistance)
+        {
+            NeighborNode* oldHead = head;
+            //cout<<"Removing node"<<endl;
+            head = head->removeLargest();
+            if(head != oldHead)
+            {
+                //The head was removed and we need to clean it up without
+                //deleting the entire tree
+                oldHead->left = NULL;
+                oldHead->right = NULL;
+                delete oldHead;
+            }
+            head->add(node);
+            this->largestDistance = head->getLargestDistance();
+        }
+    }
+}
+
+vector<NeighborNode*> NeighborSet::getVector()
+{
+    vector<NeighborNode*> vect;
+    if(this->head != NULL)
+        this->head->addToVector(&vect);
+    return vect;
+}
+
+/*
+    NeighborNode methods
+*/
+NeighborNode::NeighborNode()
+{
+    left = NULL;
+    right = NULL;
+}
+NeighborNode::~NeighborNode()
+{
+    //cout<<"Deleting A Node"<<endl;
+    if(left != NULL)
+        delete left;
+    if(right != NULL)
+        delete right;
+}
+void NeighborNode::addToVector(vector<NeighborNode*>* vector)
+{
+    if(left != NULL)
+        left->addToVector(vector);
+    vector->push_back(this);
+    if(right != NULL)
+        right->addToVector(vector);
+       
+}
+
+void NeighborNode::add(NeighborNode* n)
+{
+    if(n->distance < this->distance)
+    {
+        if(left == NULL)
+            left = n;
+        else
+            left->add(n);
+    }
+    else
+    {
+        if(right == NULL)
+            right = n;
+        else
+            right->add(n);
+    }
+}
+
+double NeighborNode::getLargestDistance()
+{
+    if(right != NULL)
+        return right->getLargestDistance();
+    else
+        return this->distance;
+}
+
+
+NeighborNode* NeighborNode::removeLargest()
+{
+    if(right != NULL)
+    {
+        NeighborNode* oldRight = right;
+        right = right->removeLargest();
+        if(right != oldRight)
+        {
+            //This means that our oldRight was just removed and we are in charge
+            //of deleting it
+            //Make sure it doesn't have kids because we don't want to delete them too
+            oldRight->left = NULL;
+            oldRight->right = NULL;
+            delete oldRight;
+        }
+        return this;
+    }
+    else
+    {
+        return left;
+    }
+    
+}
+
+
+

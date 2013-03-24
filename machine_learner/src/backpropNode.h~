@@ -1,0 +1,68 @@
+/*
+    Represents a single node in the backpropagation learning
+    model
+    It has virtual methods for computing outputs and updating weights etc.
+    It is the parent class for BackpropOutputNode, BackpropInputNode,
+    BackpropHiddenNode, and BackpropBiasNode
+*/
+
+#ifndef BACK_PROP_NODE
+#define BACK_PROP_NODE
+
+#include <vector>
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include "rand.h"
+
+#define LEARNING_RATE   0.5
+#define MOMENTUM        0.9
+
+using namespace std;
+
+class BackpropNode
+{
+private:
+    Rand& rand;
+protected:
+    vector<BackpropNode*> inputs;
+    vector<double> weights; //parralell array with inputs
+    vector<double> lastWeightChanges; //for momentum
+    vector<BackpropNode*> outputs;
+    double output;
+    double error;
+
+public:
+    BackpropNode(Rand& rand);
+    virtual ~BackpropNode();
+
+    virtual void calculateOutput()=0;
+    virtual void calculateError(){};
+    void updateWeights();
+
+    double getOutput();
+    double getError();
+
+    void addInput(BackpropNode* input);
+    void addOutput(BackpropNode* output);
+
+    /*
+        The input pointer should be a node which is one of
+        this nodes inputs. It will identify that node's weight
+        (by looking up its address) and return its weight.
+    */
+    double whatsMyWeight(BackpropNode* input);
+
+protected:
+    /*
+        This is used by output node and hidden node
+    */
+    double getNetValue();
+};
+
+
+
+#endif
+
+
+

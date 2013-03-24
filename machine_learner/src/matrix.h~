@@ -105,8 +105,8 @@ public:
 
 	// Returns the number of values associated with the specified attribute (or column)
 	// 0=continuous, 2=binary, 3=trinary, etc.
-    //Note that if it you remove rows or something, this count will not go down.
-    //For the actual current value count to getValues(attr).size()
+    //Note that if it you remove rows or something, this count will not go down
+    //for the actual current value count to getValues(attr).size()
 	size_t valueCount(size_t attr) { return m_enum_to_str[attr].size(); }
 
     // Returns a vector of all of the unique values for the given attribute

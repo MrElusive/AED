@@ -1,0 +1,21 @@
+/*
+    Inherits from backpropNode. Represents a bias node (always outputs 1)
+*/
+
+#ifndef BACK_PROP_BIAS_NODE
+#define BACK_PROP_BIAS_NODE
+
+#include "backpropNode.h"
+
+class BackpropBiasNode : public BackpropNode
+{
+public:
+    BackpropBiasNode(Rand& rand);
+    virtual ~BackpropBiasNode();
+
+    virtual double getOutput();
+    virtual void calculateOutput();
+};
+
+#endif
+

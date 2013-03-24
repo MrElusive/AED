@@ -1,0 +1,40 @@
+/*
+    This represents one instance in a knn graph. In other words if you were to
+    plot the instances in knn, this is one point (one potential neighbor)
+*/
+
+#ifndef KNN_INSTANCE_H
+#define KNN_INSTANCE_H
+
+#include <iostream>
+#include <vector>
+#include <math.h>
+#include <cassert>
+
+//values for attribute types
+#define TYPE_CONTINUOUS     0
+#define TYPE_NOMINAL        1
+
+using namespace std;
+
+class KNN_Instance
+{
+private:
+    double label;
+    vector<double> attributes;
+    vector<int> attributeTypes;
+
+public:
+    KNN_Instance(vector<double> attributes, vector<int> types,double label);
+    virtual ~KNN_Instance();
+
+    double getDistanceTo(KNN_Instance* other);
+    double getDistanceTo(const vector<double>& attributes);
+
+    vector<double>& getAttributes();
+    double getLabel(){return label;}
+
+};
+
+#endif
+

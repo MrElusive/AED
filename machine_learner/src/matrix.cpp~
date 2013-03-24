@@ -24,6 +24,7 @@ Matrix& Matrix::operator=(Matrix& source)
 {
     if(this == &source)
         return *this;
+    unknownLabel = "?";
     m_attr_name = source.m_attr_name;
 	m_str_to_enum = source.m_str_to_enum;
 	m_enum_to_str = source.m_enum_to_str;

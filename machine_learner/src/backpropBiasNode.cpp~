@@ -1,0 +1,17 @@
+//See header
+
+#include "backpropBiasNode.h"
+
+BackpropBiasNode::BackpropBiasNode(Rand& rand):BackpropNode(rand)
+{
+}
+
+BackpropBiasNode::~BackpropBiasNode()
+{
+}
+
+void BackpropBiasNode::calculateOutput()
+{
+    output = 1;
+}
+

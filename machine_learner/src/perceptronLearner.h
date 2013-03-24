@@ -1,0 +1,44 @@
+/*
+    This class manages all perceptron learning. The actual learning algorithm
+    is performed in the SinglePerceptron class, but this sets it up so that the
+    SinglePerceptron class doesn't need to worry about multiple outputs, how
+    it votes, or how it handles non-numeric data.
+    
+    In other words, this class will make one or more SinglePerceptron
+    objects and manage them so that they can learn.
+
+    Author: Nathan Wonnacott
+    Created: 1/25/2013
+*/
+
+#ifndef PERCEPTRON_LEARNER
+#define PERCEPTRON_LEARNER
+
+#include <iostream>
+#include <stdio.h>
+#include "learner.h"
+#include "rand.h"
+#include "singlePerceptron.h"
+
+using namespace std;
+
+class PerceptronLearner : public SupervisedLearner
+{
+private:
+    Rand& rand;
+    //an array of all perceptrons
+    //this array wont be initialized until train() is called
+    SinglePerceptron** perceptrons;
+    int numberOfPerceptrons;
+public:
+    PerceptronLearner(Rand& r);
+    virtual ~PerceptronLearner();
+
+    virtual void train(Matrix& features, Matrix& labels);
+    virtual void predict(const vector<double>& features, vector<double>& labels);
+
+};
+
+#endif
+
+

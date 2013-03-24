@@ -126,7 +126,6 @@ public:
 	unsigned int getSeed() { return seed; }
     int getNumHiddenLayers() {return numHiddenLayers;}
     int getHiddenNodesPerLayer(){return hiddenNodesPerLayer;}
-    int getK(){return k;}
 };
 
 // Returns the number of seconds since some fixed point in the past, with at least millisecond precision

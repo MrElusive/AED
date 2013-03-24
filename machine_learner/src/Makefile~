@@ -44,7 +44,8 @@ CPP_FILES =\
     decisionTreeLearner.cpp\
     decisionTreeNode.cpp\
     knnLearner.cpp\
-    knnInstance.cpp
+    knnInstance.cpp\
+    knnTree.cpp
 
 ################
 # Lists
