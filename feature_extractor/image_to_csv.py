@@ -9,6 +9,7 @@ import numpy
 import yaml
 
 HC = cv.Load("haarcascade_frontalface_default.xml")
+LABELS = ["happy", "sad", "angry", "surprised", "scared", "disgusted", "neutral"]
 
 def createUniqueOutputFile(outputFile):
 	newFile = outputFile
@@ -41,16 +42,18 @@ def parseParameters(parameterFile):
 		} 
 
 # This code is based off the tutorial at http://opencv.willowgarage.com/documentation/python/objdetect_cascade_classification.html
-def processImageFile(imageFile, output, param, verbose, imagePreferenceFile):
+def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePreferenceFile):
 	global imagePreference
 	
 	# Load data for detecting faces
-	image = cv.LoadImage(imageFile, 0)
+	try:
+		image = cv.LoadImage(imageFile, 0)
+	except:
+		print "Unable to load image: %s" % imageFile
+		return
 
 	# Grab faces
 	faces = cv.HaarDetectObjects(image, HC, cv.CreateMemStorage())
-
-	cv.NamedWindow('Preview Result')
 
 	# Process faces
 	for (x, y, w, h), n in faces:
@@ -89,8 +92,11 @@ def processImageFile(imageFile, output, param, verbose, imagePreferenceFile):
 			cv.ConvertScaleAbs(edged, scaled)
 
 			finalResult = scaled
+			
+			imageLabelString = LABELS[int(path.basename(imageFile)[0:1])]
+			imageLabel = int(path.basename(imageFile)[0:1])
 
-			cv.ShowImage('Preview Result', finalResult)
+			cv.ShowImage('Preview: %s' % imageLabelString, finalResult)
 			while True:
 				if (imageFile, n) in imagePreference:
 					keyPressed = imagePreference[(imageFile, n)]
@@ -98,28 +104,40 @@ def processImageFile(imageFile, output, param, verbose, imagePreferenceFile):
 					keyPressed = chr(cv.WaitKey(0) & 255)
 	
 				if keyPressed == 'n' or keyPressed == 'N':
-					print "Image skipped!"
-					break
-				elif keyPressed == 'y' or keyPressed == 'Y':
-					imageLabel = int(path.basename(imageFile)[0:1])
 					imageArray = numpy.asarray(cv.GetMat(finalResult))
 					imageArray = numpy.concatenate(imageArray)
 					imageArray = numpy.append(imageArray, imageLabel)
 					numpy.savetxt(output, imageArray[None], fmt="%d", delimiter=", ")
-					print "Image added!"
-					
+					print "Image not accepted."
 					break
+
+				elif keyPressed == 'y' or keyPressed == 'Y':
+					imageArray = numpy.asarray(cv.GetMat(finalResult))
+					imageArray = numpy.concatenate(imageArray)
+					imageArray = numpy.append(imageArray, imageLabel)
+					numpy.savetxt(output, imageArray[None], fmt="%d", delimiter=", ")
+					numpy.savetxt(filteredOutput, imageArray[None], fmt="%d", delimiter=", ")
+					print "Image accepted."					
+					break
+
+				elif keyPressed == 's' or keyPressed == 'S':
+					print "Image skipped."
+					break
+
 				else:
-					print "Please enter either 'y'/'Y' or 'n'/'N'"
+					print "Please enter either 'y'/'Y', 'n'/'N', or 's'/'S'"
 
 
 			imagePreference[(imageFile, n)] = keyPressed 
 			pickle.dump(imagePreference, file(imagePreferenceFile, 'w'))
+			
+			cv.DestroyWindow('Preview: %s' % imageLabelString)
 
 parser = OptionParser(description=__doc__)
 
 parser.add_option("-i", dest="imageFolder", default="../images", help="image folder")
 parser.add_option("-o", dest="outputCSVFile", default="output.csv", help="output csv file")
+parser.add_option("-u", dest="filteredOutputCSVFile", default="filteredOutput.csv", help="filtered output csv file")
 parser.add_option("-v", dest="verbose", default=False, action='store_true', help="show verbose output")
 parser.add_option("-c", dest="clobber", default=False, action='store_true', help="always clobber the output file")
 parser.add_option("-p", dest="parameterFile", default=None, help="designate the parameters for processing the image")
@@ -129,9 +147,11 @@ options, args = parser.parse_args()
 
 imageDirWorkList = [options.imageFolder]
 outputFile = options.outputCSVFile
+filteredOutputFile = options.filteredOutputCSVFile
 
 if not options.clobber:
 	outputFile = createUniqueOutputFile(outputFile)
+	filteredOutputFile = createUniqueOutputFile(filteredOutputFile)
 
 param = parseParameters(options.parameterFile)
 
@@ -145,15 +165,16 @@ else:
 	imagePreference = {}
 
 with open(outputFile, 'w') as output:
-	while imageDirWorkList:
-		imageDir = imageDirWorkList.pop()
+	with open(filteredOutputFile,'w') as filteredOutput:
+		while imageDirWorkList:
+			imageDir = imageDirWorkList.pop()
 
-		for dirObject in os.listdir(imageDir):
-			dirObject = path.join(imageDir, dirObject)
-			if path.isdir(dirObject):
-				imageDirWorkList.append(dirObject)
-			elif path.isfile(dirObject):
-				processImageFile(dirObject, output, param, options.verbose, options.imagePreferenceFile)
-			else:
-				print "Encountered something that is neither a file or directory: %s" % dirObject
+			for dirObject in os.listdir(imageDir):
+				dirObject = path.join(imageDir, dirObject)
+				if path.isdir(dirObject):
+					imageDirWorkList.append(dirObject)
+				elif path.isfile(dirObject):
+					processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile)
+				else:
+					print "Encountered something that is neither a file or directory: %s" % dirObject
 

@@ -33,6 +33,8 @@ def generateARFF(result, labels, output):
 	for i in range(len(result[0,:])):
 		output.write("@ATTRIBUTE Dimension_%s CONTINUOUS\n" % i)	
 
+	output.write("@ATTRIBUTE Emotion {%s}\n" % ", ".join(LABELS))
+
 	output.write("\n@DATA\n")
 	for i in range(len(result[:,0])):
 		output.write("%s, %s\n" % (", ".join(map(str, result[i])), LABELS[int(labels[i, 0])]))
