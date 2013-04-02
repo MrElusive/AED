@@ -13,6 +13,17 @@ using std::ifstream;
 using std::map;
 using std::vector;
 
+
+Matrix::Matrix(std::vector< std::string> > attributes)
+{
+    this->m_attr_name = attributes;
+}
+
+void Matrix::appendRow(std::vector<double> data)
+{
+    m_data.push_back(data);
+}
+
 Matrix::Matrix(Matrix& that)
 {
 	m_attr_name = that.m_attr_name;
@@ -24,7 +35,6 @@ Matrix& Matrix::operator=(Matrix& source)
 {
     if(this == &source)
         return *this;
-    unknownLabel = "?";
     m_attr_name = source.m_attr_name;
 	m_str_to_enum = source.m_str_to_enum;
 	m_enum_to_str = source.m_enum_to_str;
