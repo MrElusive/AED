@@ -140,7 +140,7 @@ parser = OptionParser(description=__doc__)
 
 parser.add_option("-i", dest="imageFolder", default="../images", help="image folder")
 parser.add_option("-o", dest="outputCSVFile", default="output.csv", help="output csv file")
-parser.add_option("-u", dest="filteredOutputCSVFile", default="None", help="filtered output csv file")
+parser.add_option("-u", dest="filteredOutputCSVFile", default=None, help="filtered output csv file")
 parser.add_option("-v", dest="verbose", default=False, action='store_true', help="show verbose output")
 parser.add_option("-c", dest="clobber", default=False, action='store_true', help="always clobber the output file")
 parser.add_option("-p", dest="parameterFile", default=None, help="designate the parameters for processing the image")
