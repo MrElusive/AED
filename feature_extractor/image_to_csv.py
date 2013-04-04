@@ -31,7 +31,7 @@ def parseParameters(parameterFile):
 	else:
 		return {
 			'stddev': 15.0,
-			'final-image-size': (250, 250),
+			'final-image-size': (50, 50),
 			'signal-to-noise': 1,
 			'smooth-type': cv.CV_GAUSSIAN,
 			'param1': 3,
@@ -42,7 +42,7 @@ def parseParameters(parameterFile):
 		} 
 
 # This code is based off the tutorial at http://opencv.willowgarage.com/documentation/python/objdetect_cascade_classification.html
-def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePreferenceFile):
+def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePreferenceFile, choose):
 	global imagePreference
 	
 	# Load data for detecting faces
@@ -141,7 +141,9 @@ parser.add_option("-u", dest="filteredOutputCSVFile", default="filteredOutput.cs
 parser.add_option("-v", dest="verbose", default=False, action='store_true', help="show verbose output")
 parser.add_option("-c", dest="clobber", default=False, action='store_true', help="always clobber the output file")
 parser.add_option("-p", dest="parameterFile", default=None, help="designate the parameters for processing the image")
-parser.add_option("-r", dest="imagePreferenceFile", default=None, help="keeps track of which images are accepted and which are not")
+parser.add_option("-q", dest="imagePreferenceFile", default=None, help="keeps track of which images are accepted and which are not")
+parser.add_option("-r", dest="recurse", default=False, help="recurse through directories image folder")
+parser.add_option("-s", dest="select", default=True, help="allows you to choose which images should be included in the final csv file")
 
 options, args = parser.parse_args()
 
@@ -171,10 +173,10 @@ with open(outputFile, 'w') as output:
 
 			for dirObject in os.listdir(imageDir):
 				dirObject = path.join(imageDir, dirObject)
-				if path.isdir(dirObject):
+				if path.isdir(dirObject) and options.recurse:
 					imageDirWorkList.append(dirObject)
 				elif path.isfile(dirObject):
-					processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile)
+					processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile, options.choose)
 				else:
 					print "Encountered something that is neither a file or directory: %s" % dirObject
 

@@ -18,7 +18,7 @@ parser.add_option("-f", dest="filename", default = None, help="filename of the d
 parser.add_option("-s", dest="show", default=False, action='store_true', help="show first two dimensions of new dataset")
 parser.add_option("-a", dest="algorithm", default="lle", help="set algorithm [lle, hlle]")
 parser.add_option("-k", dest="k", type=int, help="number of nearest neighbors to use")
-parser.add_option("-d", dest="outputDimensions", default=2, type=int, help="number of dimensions to output")
+parser.add_option("-d", dest="outputDimensions", default=2, type=float, help="number of dimensions to output")
 parser.add_option("-o", dest="outputFile", default="output.arff", help="the file name for the arff output")
 parser.add_option("-n", dest="numberOfInstances", help="the number of instances to use from the dataset")
 
