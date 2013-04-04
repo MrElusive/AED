@@ -116,7 +116,10 @@ def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePre
 					imageArray = numpy.concatenate(imageArray)
 					imageArray = numpy.append(imageArray, imageLabel)
 					numpy.savetxt(output, imageArray[None], fmt="%d", delimiter=", ")
-					numpy.savetxt(filteredOutput, imageArray[None], fmt="%d", delimiter=", ")
+
+					if filteredOutput:
+						numpy.savetxt(filteredOutput, imageArray[None], fmt="%d", delimiter=", ")
+
 					print "Image accepted."					
 					break
 
@@ -137,7 +140,7 @@ parser = OptionParser(description=__doc__)
 
 parser.add_option("-i", dest="imageFolder", default="../images", help="image folder")
 parser.add_option("-o", dest="outputCSVFile", default="output.csv", help="output csv file")
-parser.add_option("-u", dest="filteredOutputCSVFile", default="filteredOutput.csv", help="filtered output csv file")
+parser.add_option("-u", dest="filteredOutputCSVFile", default="None", help="filtered output csv file")
 parser.add_option("-v", dest="verbose", default=False, action='store_true', help="show verbose output")
 parser.add_option("-c", dest="clobber", default=False, action='store_true', help="always clobber the output file")
 parser.add_option("-p", dest="parameterFile", default=None, help="designate the parameters for processing the image")
@@ -153,7 +156,8 @@ filteredOutputFile = options.filteredOutputCSVFile
 
 if not options.clobber:
 	outputFile = createUniqueOutputFile(outputFile)
-	filteredOutputFile = createUniqueOutputFile(filteredOutputFile)
+	if filteredOutputFile:
+		filteredOutputFile = createUniqueOutputFile(filteredOutputFile)
 
 param = parseParameters(options.parameterFile)
 
@@ -166,17 +170,21 @@ if options.imagePreferenceFile and path.exists(options.imagePreferenceFile):
 else:
 	imagePreference = {}
 
-with open(outputFile, 'w') as output:
-	with open(filteredOutputFile,'w') as filteredOutput:
-		while imageDirWorkList:
-			imageDir = imageDirWorkList.pop()
+output = open(outputFile, 'w')
+if filteredOutputFile:
+	filteredOutput = open(filteredOutputFile, 'w')
+else:
+	filteredOutput = None
 
-			for dirObject in os.listdir(imageDir):
-				dirObject = path.join(imageDir, dirObject)
-				if path.isdir(dirObject) and options.recurse:
-					imageDirWorkList.append(dirObject)
-				elif path.isfile(dirObject):
-					processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile, options.select)
-				else:
-					print "Encountered something that is neither a file or directory: %s" % dirObject
+while imageDirWorkList:
+	imageDir = imageDirWorkList.pop()
+
+	for dirObject in os.listdir(imageDir):
+		dirObject = path.join(imageDir, dirObject)
+		if path.isdir(dirObject) and options.recurse:
+			imageDirWorkList.append(dirObject)
+		elif path.isfile(dirObject):
+			processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile, options.select)
+		else:
+			print "Encountered something that is neither a file or directory: %s" % dirObject
 
