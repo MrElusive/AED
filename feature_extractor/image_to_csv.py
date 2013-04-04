@@ -42,7 +42,7 @@ def parseParameters(parameterFile):
 		} 
 
 # This code is based off the tutorial at http://opencv.willowgarage.com/documentation/python/objdetect_cascade_classification.html
-def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePreferenceFile, choose):
+def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePreferenceFile, select):
 	global imagePreference
 	
 	# Load data for detecting faces
@@ -176,7 +176,7 @@ with open(outputFile, 'w') as output:
 				if path.isdir(dirObject) and options.recurse:
 					imageDirWorkList.append(dirObject)
 				elif path.isfile(dirObject):
-					processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile, options.choose)
+					processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile, options.select)
 				else:
 					print "Encountered something that is neither a file or directory: %s" % dirObject
 
