@@ -16,6 +16,7 @@
 
 using std::vector;
 using std::cout;
+using std::string;
 
 double SupervisedLearner::measureAccuracy(Matrix& features, Matrix& labels, Matrix* pOutStats)
 {
@@ -121,4 +122,41 @@ double SupervisedLearner::crossValidate(size_t reps, size_t folds, Matrix& featu
 	}
 	return sum / (reps * folds);
 }
+
+Matrix* SupervisedLearner::getConfusionMatrix(Matrix& features, Matrix& labels)
+{
+    vector<string> attrNames;
+    vector<double> labelValues = labels.getValues(0);
+    for(size_t l =0;l<labelValues.size();l++)
+        attrNames.push_back(labels.attrValue(0,labelValues[l]));
+
+    Matrix* confusionMatrix = new Matrix(attrNames);
+    
+    
+    for(size_t l=0;l<labelValues.size();l++)
+    {
+        vector<double> results;
+        for(size_t i=0;i<labelValues.size();i++)
+            results.push_back(0);
+        for(size_t r=0;r<features.rows();r++)
+        {
+            if(labels[r][0] == labelValues[l])
+            {
+                vector<double> prediction;
+                prediction.push_back(0);
+                this->predict(features[r],prediction);
+                size_t labelIndex = 0;
+                for(;labelIndex<labelValues.size();labelIndex++)
+                    if(labelValues[labelIndex] == prediction[0])
+                        break;
+                results[labelIndex] += 1;
+                
+            }
+        }
+        confusionMatrix->appendRow(results);
+    }
+    return confusionMatrix;
+}
+
+
 

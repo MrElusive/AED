@@ -1,0 +1,36 @@
+#This file is used to take an arff file and output a new arff file
+#that only includes data for certain output classes. This can be used
+#for example, to see if the learner can train better when it is only considering
+#happy and sad. For now, everything is hard coded in and the user must
+#change it. We can make them command line parameters later if we want
+#Created by Nathan
+
+originalArffFile = open('output.arff','r')
+outputFile = open('outputHappySad.arff','w')
+desiredValues = ['happy','sad']
+
+originalLines = originalArffFile.readlines()
+
+#chop off the newline characters
+for i in range(0,len(originalLines)):
+    originalLines[i] = originalLines[i][0:len(originalLines[i])-1]
+    
+outputLines = []
+
+for l in originalLines:
+    #print l
+    if(len(l)==0) or (l[0] == '%') or (l[0] == '@'):
+        outputLines.append(l)
+    #get the last value on the line, its the label
+    values = l.split(',')
+    label = values[len(values)-1].strip()
+    print label
+    if label in desiredValues:
+        outputLines.append(l)
+        
+for l in outputLines:
+    outputFile.write(l)
+    outputFile.write("\n")
+
+
+

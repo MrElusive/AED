@@ -30,6 +30,8 @@ public:
 	// output label is nominal, then pOutStats will be resized and set to
 	// contain stats about the frequency of correct predictions with each label.
 	double measureAccuracy(Matrix& features, Matrix& labels, Matrix* pOutStats = NULL);
+	
+	Matrix* getConfusionMatrix(Matrix& features, Matrix& labels);
 
 	// Performs cross-validation. If verbose is true, it prints the accuracy to
 	// cout after each fold.

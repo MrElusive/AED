@@ -48,6 +48,9 @@ private:
 public:
 	// Creates a 0x0 matrix. You should call loadARFF or setSize to 
 	Matrix() {}
+	
+	//Initializes a matrix with the specified attributes
+	Matrix(std::vector< std::string> > attributes);
 
 	// Copies the meta-data from that, but not the data
 	Matrix(Matrix& that);
@@ -78,6 +81,8 @@ public:
 
 	// Returns the number of rows in the matrix
 	size_t rows() const { return m_data.size(); }
+	
+	void appendRow(std::vector<double>);
 
 	// Returns the number of columns (or attributes) in the matrix
 	size_t cols() const { return m_attr_name.size(); }
@@ -105,8 +110,8 @@ public:
 
 	// Returns the number of values associated with the specified attribute (or column)
 	// 0=continuous, 2=binary, 3=trinary, etc.
-    //Note that if it you remove rows or something, this count will not go down
-    //for the actual current value count to getValues(attr).size()
+    //Note that if it you remove rows or something, this count will not go down.
+    //For the actual current value count to getValues(attr).size()
 	size_t valueCount(size_t attr) { return m_enum_to_str[attr].size(); }
 
     // Returns a vector of all of the unique values for the given attribute

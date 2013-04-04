@@ -214,6 +214,9 @@ void doit(ArgParser& parser)
 		Matrix stats;
 		double timeBeforeTesting = getTime();
 		double accuracy = learner->measureAccuracy(trainFeatures, trainLabels, &stats);
+		Matrix* confusion;
+		confusion = learner->getConfusionMatrix(trainFeatures,
+		                                        trainLabels);
 		double timeAfterTesting = getTime();
 
 		// Print results
@@ -221,6 +224,7 @@ void doit(ArgParser& parser)
 		for(size_t i = 0; i < stats.cols(); i++)
 			cout << dataset.attrValue(dataset.cols() - 1, i) << ": " << stats[0][i] << "/" << stats[1][i] << "\n";
 		cout << "Set accuracy: " << accuracy << "\n";
+		cout << "Confusion Matrix: "<<endl<<*confusion<<endl;
 		cout<< "\nTraining time: " << (timeAfterTraining - timeBeforeTraining) << " seconds\n";
 		cout<< "\nTesting time: " << (timeAfterTesting - timeBeforeTesting) << " seconds\n";
 		cout.flush();

@@ -13,6 +13,17 @@ using std::ifstream;
 using std::map;
 using std::vector;
 
+
+Matrix::Matrix(std::vector< std::string > attributes)
+{
+    this->m_attr_name = attributes;
+}
+
+void Matrix::appendRow(std::vector<double> data)
+{
+    m_data.push_back(data);
+}
+
 Matrix::Matrix(Matrix& that)
 {
 	m_attr_name = that.m_attr_name;
