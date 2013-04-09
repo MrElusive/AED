@@ -12,129 +12,132 @@ HC = cv.Load("haarcascade_frontalface_default.xml")
 LABELS = ["happy", "sad", "angry", "surprised", "scared", "disgusted", "neutral"]
 
 def createUniqueOutputFile(outputFile):
-	newFile = outputFile
-	i = 1
+    newFile = outputFile
+    i = 1
 
-	while (path.exists(newFile)):
-		(pathHead, pathTail) = path.split(outputFile)
-		(baseFileName, ext) = path.splitext(path.basename(pathTail))
+    while (path.exists(newFile)):
+        (pathHead, pathTail) = path.split(outputFile)
+        (baseFileName, ext) = path.splitext(path.basename(pathTail))
 
-		newFile = path.join(pathHead, "%s (%d)%s" % (baseFileName, i, ext))
-		i += 1
-		
-	return newFile
+        newFile = path.join(pathHead, "%s (%d)%s" % (baseFileName, i, ext))
+        i += 1
+
+    return newFile
 
 def parseParameters(parameterFile):
-	if parameterFile:
-		with open(parameterFile) as parameters:
-			return yaml.safe_load(parameters)
-	else:
-		return {
-			'stddev': 15.0,
-			'final-image-size': (50, 50),
-			'signal-to-noise': 1,
-			'smooth-type': cv.CV_GAUSSIAN,
-			'param1': 3,
-			'param2': 0,
-			'param3': 0,
-			'param4': 0,
-			'aperture-size': 3
-		} 
+    if parameterFile:
+        with open(parameterFile) as parameters:
+            return yaml.safe_load(parameters)
+    else:
+        return {
+            'stddev': 15.0,
+            'final-image-size': (50, 50),
+            'signal-to-noise': 1,
+            'smooth-type': cv.CV_GAUSSIAN,
+            'param1': 3,
+            'param2': 0,
+            'param3': 0,
+            'param4': 0,
+            'aperture-size': 3
+        }
 
 # This code is based off the tutorial at http://opencv.willowgarage.com/documentation/python/objdetect_cascade_classification.html
 def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePreferenceFile, select):
-	global imagePreference
-	
-	# Load data for detecting faces
-	try:
-		image = cv.LoadImage(imageFile, 0)
-	except:
-		print "Unable to load image: %s" % imageFile
-		return
+    global imagePreference
 
-	# Grab faces
-	faces = cv.HaarDetectObjects(image, HC, cv.CreateMemStorage())
+    # Load data for detecting faces
+    try:
+        image = cv.LoadImage(imageFile, 0)
+    except:
+        print "Unable to load image: %s" % imageFile
+        return
 
-	# Process faces
-	for (x, y, w, h), n in faces:
-		cropped = cv.CreateImage((w, h), 8, 0)
-		cv.Copy(cv.GetSubRect(image, (x, y, w, h)), cropped)
+    # Grab faces
+    faces = cv.HaarDetectObjects(image, HC, cv.CreateMemStorage())
 
-		imageStats = cv.AvgSdv(cropped)
+    # Process faces
+    for (x, y, w, h), n in faces:
+        cropped = cv.CreateImage((w, h), 8, 0)
+        cv.Copy(cv.GetSubRect(image, (x, y, w, h)), cropped)
 
-		mean = imageStats[0][0]
-		stdDev = imageStats[1][0]
-		signalToNoise = mean / stdDev
-	
-		# If the image has a standard deviation above a given threshold, then consider it to be a real face.
-		if stdDev > param['stddev']:
-			if (verbose):
-				print (x, y, w, h)
-				print imageStats
-				print signalToNoise
+        imageStats = cv.AvgSdv(cropped)
 
-			resized = cv.CreateImage(param['final-image-size'], 8, 0)
-			cv.Resize(cropped, resized);
+        mean = imageStats[0][0]
+        stdDev = imageStats[1][0]
+        signalToNoise = mean / stdDev
 
-			# Only smooth an image if the signal-to-noise ratio is below agiven threshold
-			if signalToNoise < param['signal-to-noise']:
-				smoothed = cv.CreateImage(param['final-image-size'], 8, 0)
-				cv.Smooth(resized, smoothed, param['smooth-type'], param['param1'], param['param2'], param['param3'], param['param4'])
-			else:
-				smoothed = resized
+        # If the image has a standard deviation above a given threshold, then consider it to be a real face.
+        if stdDev > param['stddev']:
+            if (verbose):
+                print (x, y, w, h)
+                print imageStats
+                print signalToNoise
 
-			# Discover the edges in the image
-			edged = smoothed #cv.CreateImage(param['final-image-size'], 32, 0)
-			#cv.Laplace(smoothed, edged, param['aperture-size'])
+            resized = cv.CreateImage(param['final-image-size'], 8, 0)
+            cv.Resize(cropped, resized);
 
-			# Scale in terms of bit-depth, not image size
-			scaled = cv.CreateImage(param['final-image-size'], 8, 0)
-			cv.ConvertScaleAbs(edged, scaled)
+            # Only smooth an image if the signal-to-noise ratio is below agiven threshold
+            if signalToNoise < param['signal-to-noise']:
+                smoothed = cv.CreateImage(param['final-image-size'], 8, 0)
+                cv.Smooth(resized, smoothed, param['smooth-type'], param['param1'], param['param2'], param['param3'], param['param4'])
+            else:
+                smoothed = resized
 
-			finalResult = scaled
-			
-			imageLabelString = LABELS[int(path.basename(imageFile)[0:1])]
-			imageLabel = int(path.basename(imageFile)[0:1])
+            # Perform histogram equalization
+            equalized = cv.CreateImage(param['final-image-size'], 8, 0)
+            cv.EqualizeHist(smoothed, equalized)
 
-			cv.ShowImage('Preview: %s' % imageLabelString, finalResult)
-			while True:
-				if (imageFile, n) in imagePreference:
-					keyPressed = imagePreference[(imageFile, n)]
-				else:
-					keyPressed = chr(cv.WaitKey(0) & 255)
-	
-				if keyPressed == 'n' or keyPressed == 'N':
-					imageArray = numpy.asarray(cv.GetMat(finalResult))
-					imageArray = numpy.concatenate(imageArray)
-					imageArray = numpy.append(imageArray, imageLabel)
-					numpy.savetxt(output, imageArray[None], fmt="%d", delimiter=", ")
-					print "Image not accepted."
-					break
+            # Discover the edges in the image
+            edged = cv.CreateImage(param['final-image-size'], 32, 0)
+            cv.Laplace(equalized, edged, param['aperture-size'])
 
-				elif keyPressed == 'y' or keyPressed == 'Y':
-					imageArray = numpy.asarray(cv.GetMat(finalResult))
-					imageArray = numpy.concatenate(imageArray)
-					imageArray = numpy.append(imageArray, imageLabel)
-					numpy.savetxt(output, imageArray[None], fmt="%d", delimiter=", ")
+            # Scale in terms of bit-depth, not image size
+            scaled = cv.CreateImage(param['final-image-size'], 8, 0)
+            cv.ConvertScaleAbs(edged, scaled)
 
-					if filteredOutput:
-						numpy.savetxt(filteredOutput, imageArray[None], fmt="%d", delimiter=", ")
+            finalResult = scaled
 
-					print "Image accepted."					
-					break
+            imageLabelString = LABELS[int(path.basename(imageFile)[0:1])]
+            imageLabel = int(path.basename(imageFile)[0:1])
 
-				elif keyPressed == 's' or keyPressed == 'S':
-					print "Image skipped."
-					break
+            cv.ShowImage('Preview: %s' % imageLabelString, finalResult)
+            while True:
+                if (imageFile, n) in imagePreference:
+                    keyPressed = imagePreference[(imageFile, n)]
+                else:
+                    keyPressed = chr(cv.WaitKey(0) & 255)
+                if keyPressed == 'n' or keyPressed == 'N':
+                    imageArray = numpy.asarray(cv.GetMat(finalResult))
+                    imageArray = numpy.concatenate(imageArray)
+                    imageArray = numpy.append(imageArray, imageLabel)
+                    numpy.savetxt(output, imageArray[None], fmt="%d", delimiter=", ")
+                    print "Image not accepted."
+                    break
 
-				else:
-					print "Please enter either 'y'/'Y', 'n'/'N', or 's'/'S'"
+                elif keyPressed == 'y' or keyPressed == 'Y':
+                    imageArray = numpy.asarray(cv.GetMat(finalResult))
+                    imageArray = numpy.concatenate(imageArray)
+                    imageArray = numpy.append(imageArray, imageLabel)
+                    numpy.savetxt(output, imageArray[None], fmt="%d", delimiter=", ")
+
+                    if filteredOutput:
+                        numpy.savetxt(filteredOutput, imageArray[None], fmt="%d", delimiter=", ")
+
+                    print "Image accepted."                    
+                    break
+
+                elif keyPressed == 's' or keyPressed == 'S':
+                    print "Image skipped."
+                    break
+
+                else:
+                    print "Please enter either 'y'/'Y', 'n'/'N', or 's'/'S'"
 
 
-			imagePreference[(imageFile, n)] = keyPressed 
-			pickle.dump(imagePreference, file(imagePreferenceFile, 'w'))
-			
-			cv.DestroyWindow('Preview: %s' % imageLabelString)
+            imagePreference[(imageFile, n)] = keyPressed 
+            pickle.dump(imagePreference, file(imagePreferenceFile, 'w'))
+            
+            cv.DestroyWindow('Preview: %s' % imageLabelString)
 
 parser = OptionParser(description=__doc__)
 
@@ -155,36 +158,36 @@ outputFile = options.outputCSVFile
 filteredOutputFile = options.filteredOutputCSVFile
 
 if not options.clobber:
-	outputFile = createUniqueOutputFile(outputFile)
-	if filteredOutputFile:
-		filteredOutputFile = createUniqueOutputFile(filteredOutputFile)
+    outputFile = createUniqueOutputFile(outputFile)
+    if filteredOutputFile:
+        filteredOutputFile = createUniqueOutputFile(filteredOutputFile)
 
 param = parseParameters(options.parameterFile)
 
 if options.imagePreferenceFile and path.exists(options.imagePreferenceFile):
-	try:
-		imagePreference = pickle.load(file(options.imagePreferenceFile))
-	except pickle.UnpicklingError:
-		print "Unable to unpickle the file '%s'." % options.imagePreferenceFile
-		exit(1)
+    try:
+        imagePreference = pickle.load(file(options.imagePreferenceFile))
+    except pickle.UnpicklingError:
+        print "Unable to unpickle the file '%s'." % options.imagePreferenceFile
+        exit(1)
 else:
-	imagePreference = {}
+    imagePreference = {}
 
 output = open(outputFile, 'w')
 if filteredOutputFile:
-	filteredOutput = open(filteredOutputFile, 'w')
+    filteredOutput = open(filteredOutputFile, 'w')
 else:
-	filteredOutput = None
+    filteredOutput = None
 
 while imageDirWorkList:
-	imageDir = imageDirWorkList.pop()
+    imageDir = imageDirWorkList.pop()
 
-	for dirObject in os.listdir(imageDir):
-		dirObject = path.join(imageDir, dirObject)
-		if path.isdir(dirObject) and options.recurse:
-			imageDirWorkList.append(dirObject)
-		elif path.isfile(dirObject):
-			processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile, options.select)
-		else:
-			print "Encountered something that is neither a file or directory: %s" % dirObject
+    for dirObject in os.listdir(imageDir):
+        dirObject = path.join(imageDir, dirObject)
+        if path.isdir(dirObject) and options.recurse:
+            imageDirWorkList.append(dirObject)
+        elif path.isfile(dirObject):
+            processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile, options.select)
+        else:
+            print "Encountered something that is neither a file or directory: %s" % dirObject
 

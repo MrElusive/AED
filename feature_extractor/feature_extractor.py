@@ -31,7 +31,7 @@ def generateARFF(result, labels, output):
 	output.write("@RELATION emotion\n\n")
 
 	for i in range(len(result[0,:])):
-		output.write("@ATTRIBUTE Dimension_%s CONTINUOUS\n" % i)	
+		output.write("@ATTRIBUTE Dimension_%s CONTINUOUS\n" % i)
 
 	output.write("@ATTRIBUTE Emotion {%s}\n" % ", ".join(LABELS))
 
@@ -61,13 +61,13 @@ if not options.k:
 
 
 print "Using %d nearest neighbors." % options.k
-print "Using %d out of %d instances." % (len(dataset[:,0]), originalNumberOfInstances) 
+print "Using %d out of %d instances." % (len(dataset[:,0]), originalNumberOfInstances)
 print "Source Dimensionality: %d; Target Dimensionality %d.\n" % (len(dataset[0,:]), options.outputDimensions)
 
 if options.algorithm == 'lle':
 	print "Running LLE..."
 	lle = mdp.nodes.LLENode(options.k, output_dim=options.outputDimensions)
-	result = lle(dataset)	
+	result = lle(dataset)
 
 elif options.algorithm == 'hlle':
 	print "Running HLLE..."
@@ -79,7 +79,7 @@ print "Final Dimensionality: %d.\n" % len(result[0,:])
 
 print "Generating ARFF files..."
 with open(options.outputFile, "w") as output:
-	generateARFF(result, labels, output)	
+	generateARFF(result, labels, output)
 print "Finished generating ARFF files.\n"
 
 # Show the first two dimensions of the new data set.
