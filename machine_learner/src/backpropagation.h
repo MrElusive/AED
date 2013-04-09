@@ -23,7 +23,7 @@
 
 #define VALIDATION_PERCENTAGE 0.25
 
-#define MSE_WINDOW_SIZE 25
+#define MSE_WINDOW_SIZE 20
 
 using namespace std;
 

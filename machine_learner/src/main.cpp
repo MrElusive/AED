@@ -242,12 +242,15 @@ void doit(ArgParser& parser)
 		// Test on the same dataset
 		Matrix stats;
 		double accuracy = learner->measureAccuracy(trainFeatures, trainLabels, &stats);
-
+        Matrix* confusion;
+		confusion = learner->getConfusionMatrix(trainFeatures,
+		                                        trainLabels);
 		// Print results
 		cout << "\n\nAccuracy on the training set: (does NOT imply the ability to generalize)\n";
 		for(size_t i = 0; i < stats.cols(); i++)
 			cout << dataset.attrValue(dataset.cols() - 1, i) << ": " << stats[0][i] << "/" << stats[1][i] << "\n";
 		cout << "Set accuracy: " << accuracy << "\n";
+		cout << "Confusion Matrix: "<<endl<<*confusion<<endl;
 		cout.flush();
 
 		// Test on the test set
@@ -262,6 +265,8 @@ void doit(ArgParser& parser)
 		testLabels.copyPart(testSet, 0, testSet.cols() - labelDims, testSet.rows(), labelDims);
 		double timeBeforeTesting = getTime();
 		accuracy = learner->measureAccuracy(testFeatures, testLabels, &stats);
+		confusion = learner->getConfusionMatrix(trainFeatures,
+		                                        trainLabels);
 		double timeAfterTesting = getTime();
 
 		// Print results
@@ -269,6 +274,7 @@ void doit(ArgParser& parser)
 		for(size_t i = 0; i < stats.cols(); i++)
 			cout << dataset.attrValue(dataset.cols() - 1, i) << ": " << stats[0][i] << "/" << stats[1][i] << "\n";
 		cout << "Set accuracy: " << accuracy << "\n";
+		cout << "Confusion Matrix: "<<endl<<*confusion<<endl;
 		cout << "\nTraining time: " << (timeAfterTraining - timeBeforeTraining) << " seconds\n";
 		cout << "\nTesting time: " << (timeAfterTesting - timeBeforeTesting) << " seconds\n";
 		cout.flush();
@@ -298,12 +304,15 @@ void doit(ArgParser& parser)
 		// Test on the same dataset
 		Matrix stats;
 		double accuracy = learner->measureAccuracy(trainFeatures, trainLabels, &stats);
-
+        Matrix* confusion;
+		confusion = learner->getConfusionMatrix(trainFeatures,
+		                                        trainLabels);
 		// Print results
 		cout << "\n\nAccuracy on the training set: (does NOT imply the ability to generalize)\n";
 		for(size_t i = 0; i < stats.cols(); i++)
 			cout << dataset.attrValue(dataset.cols() - 1, i) << ": " << stats[0][i] << "/" << stats[1][i] << "\n";
 		cout << "Set accuracy: " << accuracy << "\n";
+		cout << "Confusion Matrix: "<<endl<<*confusion<<endl;
 		cout.flush();
 
 		// Test on the test set
@@ -312,6 +321,8 @@ void doit(ArgParser& parser)
 		testLabels.copyPart(testSet, 0, testSet.cols() - labelDims, testSet.rows(), labelDims);
 		double timeBeforeTesting = getTime();
 		accuracy = learner->measureAccuracy(testFeatures, testLabels, &stats);
+		confusion = learner->getConfusionMatrix(testFeatures,
+		                                        testLabels);
 		double timeAfterTesting = getTime();
 
 		// Print results
@@ -319,6 +330,7 @@ void doit(ArgParser& parser)
 		for(size_t i = 0; i < stats.cols(); i++)
 			cout << dataset.attrValue(dataset.cols() - 1, i) << ": " << stats[0][i] << "/" << stats[1][i] << "\n";
 		cout << "Set accuracy: " << accuracy << "\n";
+		cout << "Confusion Matrix: "<<endl<<*confusion<<endl;
 		cout<< "\nTraining time: " << (timeAfterTraining - timeBeforeTraining) << " seconds\n";
 		cout<< "\nTesting time: " << (timeAfterTesting - timeBeforeTesting) << " seconds\n";
 		cout.flush();

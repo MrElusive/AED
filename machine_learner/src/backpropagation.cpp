@@ -102,11 +102,12 @@ void BackPropagationLearner::train(Matrix& features, Matrix& labels)
         //        epoch, missclassification,sumSquaredError);
         double trainMisClas = findMissclass(trainFeatures,trainLabels);
         double trainSSE = getSumSquaredError(trainFeatures,trainLabels);
-        /*printf("%i,Train MSE,%f,validation MSE,%f\n",
+        printf("%i,Train MSE,%f,validation MSE,%f,validation Missclass,%f\n",
                 epoch,
                 trainSSE/trainFeatures.rows(),
-                sumSquaredError/validationFeatures.rows());
-        */
+                sumSquaredError/validationFeatures.rows(),
+                missclassification);
+        
         
 
         //Adjust the error windows
@@ -115,11 +116,18 @@ void BackPropagationLearner::train(Matrix& features, Matrix& labels)
         currentErrorWindow.erase(currentErrorWindow.begin());
         currentErrorWindow.push_back(missclassification);
 
-        if((average(previousErrorWindow)-average(currentErrorWindow))<0.0001)
+        if((average(previousErrorWindow)-average(currentErrorWindow))<0)
+        {
+            cout<<"Stopped because previousErrorWindow="
+                <<average(previousErrorWindow)
+                <<" and currentErrorWindow="<<average(currentErrorWindow)
+                <<endl;
             break;
-        //if(epoch>100)
-        //    break;
+        }
+
         epoch++;
+        if(epoch % 100 ==0)
+            cout<<"Epoch "<<epoch<<endl;
     }
 }
 void BackPropagationLearner::predict(const vector<double>& features, 
