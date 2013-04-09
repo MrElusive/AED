@@ -114,9 +114,10 @@ void BackPropagationLearner::train(Matrix& features, Matrix& labels)
         previousErrorWindow.erase(previousErrorWindow.begin());
         previousErrorWindow.push_back(currentErrorWindow[0]);
         currentErrorWindow.erase(currentErrorWindow.begin());
-        currentErrorWindow.push_back(sumSquaredError/validationFeatures.rows());
+        currentErrorWindow.push_back(missclassification);
 
-        if((average(previousErrorWindow)-average(currentErrorWindow))<0.001)
+        //if((average(previousErrorWindow)-average(currentErrorWindow))<=0)
+        if(epoch > 100)
         {
             cout<<"Stopped because previousErrorWindow="
                 <<average(previousErrorWindow)

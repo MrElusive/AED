@@ -116,7 +116,7 @@ void BackPropagationLearner::train(Matrix& features, Matrix& labels)
         currentErrorWindow.erase(currentErrorWindow.begin());
         currentErrorWindow.push_back(missclassification);
 
-        if((average(previousErrorWindow)-average(currentErrorWindow))<0)
+        if((average(previousErrorWindow)-average(currentErrorWindow))<=0)
         {
             cout<<"Stopped because previousErrorWindow="
                 <<average(previousErrorWindow)
