@@ -1,0 +1,130 @@
+Creating Backrop with 1 hidden layers and 100 hidden nodes per layer
+Learning rate:0.4
+Momentum:0
+Dataset name: ../feature_extractor/arffoutput/filtered-hist-100k-50d.arff
+Number of instances (rows): 762
+Number of attributes (cols): 51
+Learning algorithm: backprop
+Evaluation method: random
+numOutputs = 7
+1,Train MSE,0.894051,validation MSE,0.900808,validation Missclass,0.853147
+2,Train MSE,0.884129,validation MSE,0.895796,validation Missclass,0.881119
+3,Train MSE,0.906445,validation MSE,0.927600,validation Missclass,0.804196
+4,Train MSE,0.895683,validation MSE,0.904692,validation Missclass,0.846154
+5,Train MSE,0.850390,validation MSE,0.863920,validation Missclass,0.783217
+6,Train MSE,0.847325,validation MSE,0.859823,validation Missclass,0.790210
+7,Train MSE,0.855268,validation MSE,0.880055,validation Missclass,0.853147
+8,Train MSE,0.836590,validation MSE,0.861387,validation Missclass,0.776224
+9,Train MSE,0.860363,validation MSE,0.894957,validation Missclass,0.783217
+10,Train MSE,0.843033,validation MSE,0.871516,validation Missclass,0.797203
+11,Train MSE,0.886507,validation MSE,0.917691,validation Missclass,0.839161
+12,Train MSE,0.818601,validation MSE,0.847419,validation Missclass,0.748252
+13,Train MSE,1.156852,validation MSE,1.205214,validation Missclass,0.881119
+14,Train MSE,0.803543,validation MSE,0.845484,validation Missclass,0.811189
+15,Train MSE,0.799451,validation MSE,0.835338,validation Missclass,0.727273
+16,Train MSE,0.794243,validation MSE,0.824911,validation Missclass,0.713287
+17,Train MSE,0.809524,validation MSE,0.855936,validation Missclass,0.790210
+18,Train MSE,0.801712,validation MSE,0.838038,validation Missclass,0.776224
+19,Train MSE,0.896790,validation MSE,0.960019,validation Missclass,0.811189
+20,Train MSE,0.751962,validation MSE,0.812667,validation Missclass,0.776224
+21,Train MSE,0.783196,validation MSE,0.828509,validation Missclass,0.699301
+22,Train MSE,0.817116,validation MSE,0.880908,validation Missclass,0.769231
+23,Train MSE,0.790079,validation MSE,0.848167,validation Missclass,0.783217
+24,Train MSE,0.748018,validation MSE,0.807591,validation Missclass,0.741259
+25,Train MSE,0.741262,validation MSE,0.811481,validation Missclass,0.734266
+26,Train MSE,0.747387,validation MSE,0.819072,validation Missclass,0.762238
+27,Train MSE,0.769504,validation MSE,0.830973,validation Missclass,0.741259
+28,Train MSE,0.727222,validation MSE,0.799441,validation Missclass,0.755245
+29,Train MSE,0.784668,validation MSE,0.835663,validation Missclass,0.755245
+30,Train MSE,0.722937,validation MSE,0.794383,validation Missclass,0.755245
+31,Train MSE,0.763382,validation MSE,0.848675,validation Missclass,0.748252
+32,Train MSE,0.748194,validation MSE,0.830686,validation Missclass,0.741259
+33,Train MSE,0.722412,validation MSE,0.807703,validation Missclass,0.720280
+34,Train MSE,0.715979,validation MSE,0.801094,validation Missclass,0.776224
+35,Train MSE,0.730821,validation MSE,0.824383,validation Missclass,0.734266
+36,Train MSE,0.721261,validation MSE,0.812715,validation Missclass,0.748252
+37,Train MSE,0.704140,validation MSE,0.791869,validation Missclass,0.706294
+38,Train MSE,0.709563,validation MSE,0.797872,validation Missclass,0.692308
+39,Train MSE,0.712851,validation MSE,0.797759,validation Missclass,0.692308
+40,Train MSE,0.702448,validation MSE,0.798658,validation Missclass,0.727273
+41,Train MSE,0.712741,validation MSE,0.815118,validation Missclass,0.769231
+42,Train MSE,0.698351,validation MSE,0.793534,validation Missclass,0.762238
+43,Train MSE,0.715346,validation MSE,0.808307,validation Missclass,0.762238
+44,Train MSE,0.700417,validation MSE,0.791733,validation Missclass,0.706294
+45,Train MSE,0.713759,validation MSE,0.823250,validation Missclass,0.762238
+46,Train MSE,0.695192,validation MSE,0.795300,validation Missclass,0.720280
+47,Train MSE,0.714353,validation MSE,0.819773,validation Missclass,0.776224
+48,Train MSE,0.729947,validation MSE,0.829213,validation Missclass,0.769231
+49,Train MSE,0.809580,validation MSE,0.914963,validation Missclass,0.741259
+50,Train MSE,0.733302,validation MSE,0.839189,validation Missclass,0.727273
+51,Train MSE,0.689662,validation MSE,0.799303,validation Missclass,0.741259
+52,Train MSE,0.716748,validation MSE,0.812378,validation Missclass,0.727273
+53,Train MSE,0.713495,validation MSE,0.814029,validation Missclass,0.734266
+54,Train MSE,0.703284,validation MSE,0.808105,validation Missclass,0.727273
+55,Train MSE,0.680891,validation MSE,0.796378,validation Missclass,0.699301
+56,Train MSE,0.693672,validation MSE,0.809371,validation Missclass,0.734266
+57,Train MSE,0.744810,validation MSE,0.856947,validation Missclass,0.748252
+58,Train MSE,0.782245,validation MSE,0.883892,validation Missclass,0.671329
+59,Train MSE,0.691833,validation MSE,0.807545,validation Missclass,0.762238
+60,Train MSE,0.765621,validation MSE,0.886653,validation Missclass,0.741259
+Stopped because previousErrorWindow=0.739161 and currentErrorWindow=0.739161
+
+
+Accuracy on the training set: (does NOT imply the ability to generalize)
+happy: 92/113
+sad: 0/87
+angry: 25/69
+surprised: 70/76
+scared: 0/63
+disgusted: 0/68
+neutral: 0/96
+Set accuracy: 0.326923
+Confusion Matrix: 
+
+0: 25, 3, 0, 0, 0, 41, 0, 
+1: 2, 92, 0, 0, 0, 19, 0, 
+2: 12, 2, 0, 0, 0, 81, 1, 
+3: 19, 3, 0, 0, 0, 65, 0, 
+4: 16, 7, 0, 0, 0, 45, 0, 
+5: 3, 3, 0, 0, 0, 70, 0, 
+6: 11, 2, 0, 0, 0, 50, 0, 
+Attribute[0]:angry
+Attribute[1]:happy
+Attribute[2]:neutral
+Attribute[3]:sad
+Attribute[4]:disgusted
+Attribute[5]:surprised
+Attribute[6]:scared
+
+
+
+Accuracy on the test set:
+happy: 23/36
+sad: 0/16
+angry: 7/29
+surprised: 23/27
+scared: 0/21
+disgusted: 0/23
+neutral: 0/38
+Set accuracy: 0.278947
+Confusion Matrix: 
+
+0: 0, 0, 5, 1, 17, 0, 0, 
+1: 0, 0, 1, 2, 12, 1, 0, 
+2: 0, 0, 7, 2, 20, 0, 0, 
+3: 0, 0, 1, 23, 12, 0, 0, 
+4: 0, 0, 3, 1, 23, 0, 0, 
+5: 0, 0, 2, 1, 18, 0, 0, 
+6: 0, 0, 5, 0, 33, 0, 0, 
+Attribute[0]:disgusted
+Attribute[1]:sad
+Attribute[2]:angry
+Attribute[3]:happy
+Attribute[4]:surprised
+Attribute[5]:scared
+Attribute[6]:neutral
+
+
+Training time: 3.48918 seconds
+
+Testing time: 0.00681996 seconds
