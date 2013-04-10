@@ -88,12 +88,12 @@ def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePre
             cv.EqualizeHist(smoothed, equalized)
 
             # Discover the edges in the image
-            edged = cv.CreateImage(param['final-image-size'], 32, 0)
-            cv.Laplace(equalized, edged, param['aperture-size'])
+            #edged = cv.CreateImage(param['final-image-size'], 32, 0)
+            #cv.Laplace(equalized, edged, param['aperture-size'])
 
             # Scale in terms of bit-depth, not image size
             scaled = cv.CreateImage(param['final-image-size'], 8, 0)
-            cv.ConvertScaleAbs(edged, scaled)
+            cv.ConvertScaleAbs(equalized, scaled)
 
             finalResult = scaled
 
@@ -123,7 +123,7 @@ def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePre
                     if filteredOutput:
                         numpy.savetxt(filteredOutput, imageArray[None], fmt="%d", delimiter=", ")
 
-                    print "Image accepted."                    
+                    print "Image accepted."
                     break
 
                 elif keyPressed == 's' or keyPressed == 'S':
@@ -134,9 +134,9 @@ def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePre
                     print "Please enter either 'y'/'Y', 'n'/'N', or 's'/'S'"
 
 
-            imagePreference[(imageFile, n)] = keyPressed 
+            imagePreference[(imageFile, n)] = keyPressed
             pickle.dump(imagePreference, file(imagePreferenceFile, 'w'))
-            
+
             cv.DestroyWindow('Preview: %s' % imageLabelString)
 
 parser = OptionParser(description=__doc__)
@@ -181,13 +181,17 @@ else:
 
 while imageDirWorkList:
     imageDir = imageDirWorkList.pop()
+    i = 1
 
-    for dirObject in os.listdir(imageDir):
+    for dirObject in sorted(os.listdir(imageDir)):
         dirObject = path.join(imageDir, dirObject)
         if path.isdir(dirObject) and options.recurse:
             imageDirWorkList.append(dirObject)
         elif path.isfile(dirObject):
+            print "%d: %s" % (i, dirObject)
             processImageFile(dirObject, output, filteredOutput, param, options.verbose, options.imagePreferenceFile, options.select)
+            i += 1
+            print
         else:
             print "Encountered something that is neither a file or directory: %s" % dirObject
 

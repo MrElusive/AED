@@ -71,7 +71,7 @@ if options.algorithm == 'lle':
 
 elif options.algorithm == 'hlle':
 	print "Running HLLE..."
-	hlle = mdp.nodes.HLLENode(options.k, output_dim=options.outputDimensions)(dataset)
+	hlle = mdp.nodes.HLLENode(options.k, output_dim=int(options.outputDimensions))
 	result = hlle(dataset)
 
 print "Finished running.\n"
