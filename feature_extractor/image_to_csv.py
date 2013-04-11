@@ -1,3 +1,4 @@
+import pdb
 #!/usr/bin/python
 import os
 import pickle
@@ -95,7 +96,11 @@ def processImageFile(imageFile, output, filteredOutput, param, verbose, imagePre
             scaled = cv.CreateImage(param['final-image-size'], 8, 0)
             cv.ConvertScaleAbs(equalized, scaled)
 
-            finalResult = scaled
+            (w, h) = param['final-image-size']
+            finalCropped = cv.CreateImage((w - 14, h - 12), 8, 0)
+            cv.Copy(cv.GetSubRect(scaled, (7, 8, w - 14, h - 12)), finalCropped)
+
+            finalResult = finalCropped
 
             imageLabelString = LABELS[int(path.basename(imageFile)[0:1])]
             imageLabel = int(path.basename(imageFile)[0:1])
