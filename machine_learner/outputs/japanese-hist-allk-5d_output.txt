@@ -1,0 +1,248 @@
+Creating Backrop with 1 hidden layers and 10 hidden nodes per layer
+Learning rate:0.4
+Momentum:0
+Dataset name: ../feature_extractor/arffoutput/japanese-hist-allk-5d.arff
+Number of instances (rows): 213
+Number of attributes (cols): 6
+Learning algorithm: backprop
+Evaluation method: random
+numOutputs = 7
+1,Train MSE,0.858060,validation MSE,0.878258,validation Missclass,0.875000
+2,Train MSE,0.859982,validation MSE,0.877627,validation Missclass,0.900000
+3,Train MSE,0.859191,validation MSE,0.866339,validation Missclass,0.950000
+4,Train MSE,0.860781,validation MSE,0.864133,validation Missclass,0.875000
+5,Train MSE,0.857939,validation MSE,0.869090,validation Missclass,0.925000
+6,Train MSE,0.856440,validation MSE,0.870700,validation Missclass,0.900000
+7,Train MSE,0.857356,validation MSE,0.868192,validation Missclass,0.875000
+8,Train MSE,0.856039,validation MSE,0.864406,validation Missclass,0.950000
+9,Train MSE,0.857620,validation MSE,0.870215,validation Missclass,0.950000
+10,Train MSE,0.856934,validation MSE,0.874087,validation Missclass,0.825000
+11,Train MSE,0.856182,validation MSE,0.874138,validation Missclass,0.950000
+12,Train MSE,0.856202,validation MSE,0.864742,validation Missclass,0.900000
+13,Train MSE,0.860953,validation MSE,0.862537,validation Missclass,0.825000
+14,Train MSE,0.855233,validation MSE,0.871969,validation Missclass,0.950000
+15,Train MSE,0.856289,validation MSE,0.880175,validation Missclass,0.900000
+16,Train MSE,0.856358,validation MSE,0.869277,validation Missclass,0.900000
+17,Train MSE,0.858107,validation MSE,0.890333,validation Missclass,0.950000
+18,Train MSE,0.860014,validation MSE,0.878365,validation Missclass,0.900000
+19,Train MSE,0.853192,validation MSE,0.868499,validation Missclass,0.925000
+20,Train MSE,0.852801,validation MSE,0.870135,validation Missclass,0.875000
+21,Train MSE,0.853782,validation MSE,0.866203,validation Missclass,0.900000
+22,Train MSE,0.852425,validation MSE,0.869192,validation Missclass,0.875000
+23,Train MSE,0.854332,validation MSE,0.853833,validation Missclass,0.825000
+24,Train MSE,0.851237,validation MSE,0.873577,validation Missclass,0.850000
+25,Train MSE,0.854511,validation MSE,0.876487,validation Missclass,0.875000
+26,Train MSE,0.850604,validation MSE,0.866700,validation Missclass,0.825000
+27,Train MSE,0.850262,validation MSE,0.861339,validation Missclass,0.850000
+28,Train MSE,0.856733,validation MSE,0.893901,validation Missclass,0.950000
+29,Train MSE,0.852272,validation MSE,0.853602,validation Missclass,0.875000
+30,Train MSE,0.849997,validation MSE,0.869125,validation Missclass,0.925000
+31,Train MSE,0.849227,validation MSE,0.861879,validation Missclass,0.750000
+32,Train MSE,0.849297,validation MSE,0.868923,validation Missclass,0.875000
+33,Train MSE,0.846424,validation MSE,0.869375,validation Missclass,0.925000
+34,Train MSE,0.846701,validation MSE,0.862510,validation Missclass,0.875000
+35,Train MSE,0.846803,validation MSE,0.872251,validation Missclass,0.925000
+36,Train MSE,0.846596,validation MSE,0.874033,validation Missclass,0.850000
+37,Train MSE,0.846048,validation MSE,0.866529,validation Missclass,0.825000
+38,Train MSE,0.845640,validation MSE,0.863836,validation Missclass,0.750000
+39,Train MSE,0.844495,validation MSE,0.857661,validation Missclass,0.850000
+40,Train MSE,0.842798,validation MSE,0.858516,validation Missclass,0.800000
+41,Train MSE,0.844501,validation MSE,0.869744,validation Missclass,0.775000
+42,Train MSE,0.842773,validation MSE,0.854087,validation Missclass,0.800000
+43,Train MSE,0.841139,validation MSE,0.857311,validation Missclass,0.875000
+44,Train MSE,0.841625,validation MSE,0.865112,validation Missclass,0.800000
+45,Train MSE,0.838893,validation MSE,0.855972,validation Missclass,0.800000
+46,Train MSE,0.838631,validation MSE,0.865441,validation Missclass,0.850000
+47,Train MSE,0.837472,validation MSE,0.860853,validation Missclass,0.775000
+48,Train MSE,0.840719,validation MSE,0.863955,validation Missclass,0.875000
+49,Train MSE,0.835351,validation MSE,0.858025,validation Missclass,0.800000
+50,Train MSE,0.836848,validation MSE,0.864722,validation Missclass,0.875000
+51,Train MSE,0.834421,validation MSE,0.860437,validation Missclass,0.850000
+52,Train MSE,0.832229,validation MSE,0.852211,validation Missclass,0.825000
+53,Train MSE,0.834198,validation MSE,0.854148,validation Missclass,0.875000
+54,Train MSE,0.829892,validation MSE,0.869233,validation Missclass,0.850000
+55,Train MSE,0.831880,validation MSE,0.865401,validation Missclass,0.775000
+56,Train MSE,0.830754,validation MSE,0.849535,validation Missclass,0.825000
+57,Train MSE,0.826649,validation MSE,0.854443,validation Missclass,0.750000
+58,Train MSE,0.825786,validation MSE,0.865706,validation Missclass,0.800000
+59,Train MSE,0.826375,validation MSE,0.866677,validation Missclass,0.900000
+60,Train MSE,0.824369,validation MSE,0.862753,validation Missclass,0.850000
+61,Train MSE,0.823766,validation MSE,0.857830,validation Missclass,0.775000
+62,Train MSE,0.821696,validation MSE,0.840967,validation Missclass,0.775000
+63,Train MSE,0.821490,validation MSE,0.843968,validation Missclass,0.775000
+64,Train MSE,0.821527,validation MSE,0.847996,validation Missclass,0.850000
+65,Train MSE,0.821521,validation MSE,0.871894,validation Missclass,0.850000
+66,Train MSE,0.816937,validation MSE,0.864079,validation Missclass,0.825000
+67,Train MSE,0.819381,validation MSE,0.853755,validation Missclass,0.850000
+68,Train MSE,0.816810,validation MSE,0.851726,validation Missclass,0.850000
+69,Train MSE,0.810743,validation MSE,0.843933,validation Missclass,0.825000
+70,Train MSE,0.808660,validation MSE,0.843271,validation Missclass,0.700000
+71,Train MSE,0.806357,validation MSE,0.850160,validation Missclass,0.650000
+72,Train MSE,0.808415,validation MSE,0.832414,validation Missclass,0.775000
+73,Train MSE,0.806755,validation MSE,0.838687,validation Missclass,0.850000
+74,Train MSE,0.806218,validation MSE,0.842792,validation Missclass,0.800000
+75,Train MSE,0.800405,validation MSE,0.842068,validation Missclass,0.650000
+76,Train MSE,0.800039,validation MSE,0.837445,validation Missclass,0.700000
+77,Train MSE,0.799587,validation MSE,0.846301,validation Missclass,0.750000
+78,Train MSE,0.800593,validation MSE,0.830969,validation Missclass,0.775000
+79,Train MSE,0.799035,validation MSE,0.856472,validation Missclass,0.825000
+80,Train MSE,0.793608,validation MSE,0.837350,validation Missclass,0.750000
+81,Train MSE,0.795950,validation MSE,0.845081,validation Missclass,0.800000
+82,Train MSE,0.792244,validation MSE,0.829761,validation Missclass,0.725000
+83,Train MSE,0.795785,validation MSE,0.841669,validation Missclass,0.800000
+84,Train MSE,0.793036,validation MSE,0.839533,validation Missclass,0.650000
+85,Train MSE,0.792351,validation MSE,0.826867,validation Missclass,0.775000
+86,Train MSE,0.787857,validation MSE,0.845707,validation Missclass,0.800000
+87,Train MSE,0.786297,validation MSE,0.839072,validation Missclass,0.775000
+88,Train MSE,0.786000,validation MSE,0.828201,validation Missclass,0.725000
+89,Train MSE,0.787388,validation MSE,0.826021,validation Missclass,0.675000
+90,Train MSE,0.788212,validation MSE,0.840190,validation Missclass,0.800000
+91,Train MSE,0.783627,validation MSE,0.834164,validation Missclass,0.750000
+92,Train MSE,0.781849,validation MSE,0.824792,validation Missclass,0.600000
+93,Train MSE,0.780366,validation MSE,0.826742,validation Missclass,0.700000
+94,Train MSE,0.779160,validation MSE,0.828478,validation Missclass,0.750000
+95,Train MSE,0.778911,validation MSE,0.842025,validation Missclass,0.800000
+96,Train MSE,0.781024,validation MSE,0.826403,validation Missclass,0.750000
+97,Train MSE,0.777492,validation MSE,0.838681,validation Missclass,0.725000
+98,Train MSE,0.779445,validation MSE,0.827496,validation Missclass,0.700000
+99,Train MSE,0.779344,validation MSE,0.836015,validation Missclass,0.700000
+Epoch 100
+100,Train MSE,0.774172,validation MSE,0.832596,validation Missclass,0.825000
+101,Train MSE,0.770736,validation MSE,0.830304,validation Missclass,0.675000
+102,Train MSE,0.771047,validation MSE,0.842153,validation Missclass,0.725000
+103,Train MSE,0.771351,validation MSE,0.850206,validation Missclass,0.725000
+104,Train MSE,0.781576,validation MSE,0.852620,validation Missclass,0.725000
+105,Train MSE,0.772299,validation MSE,0.843991,validation Missclass,0.750000
+106,Train MSE,0.769271,validation MSE,0.817033,validation Missclass,0.700000
+107,Train MSE,0.767313,validation MSE,0.835019,validation Missclass,0.725000
+108,Train MSE,0.766203,validation MSE,0.836301,validation Missclass,0.775000
+109,Train MSE,0.763486,validation MSE,0.828527,validation Missclass,0.650000
+110,Train MSE,0.765350,validation MSE,0.829259,validation Missclass,0.700000
+111,Train MSE,0.763250,validation MSE,0.832697,validation Missclass,0.750000
+112,Train MSE,0.764662,validation MSE,0.818189,validation Missclass,0.650000
+113,Train MSE,0.761654,validation MSE,0.827914,validation Missclass,0.725000
+114,Train MSE,0.765368,validation MSE,0.839783,validation Missclass,0.725000
+115,Train MSE,0.761648,validation MSE,0.842279,validation Missclass,0.725000
+116,Train MSE,0.761430,validation MSE,0.822955,validation Missclass,0.650000
+117,Train MSE,0.761452,validation MSE,0.825870,validation Missclass,0.725000
+118,Train MSE,0.757081,validation MSE,0.838220,validation Missclass,0.700000
+119,Train MSE,0.765145,validation MSE,0.836778,validation Missclass,0.800000
+120,Train MSE,0.757961,validation MSE,0.835975,validation Missclass,0.675000
+121,Train MSE,0.755812,validation MSE,0.829354,validation Missclass,0.700000
+122,Train MSE,0.755669,validation MSE,0.826290,validation Missclass,0.650000
+123,Train MSE,0.755271,validation MSE,0.830323,validation Missclass,0.750000
+124,Train MSE,0.753536,validation MSE,0.843669,validation Missclass,0.750000
+125,Train MSE,0.759433,validation MSE,0.830392,validation Missclass,0.675000
+126,Train MSE,0.763715,validation MSE,0.834198,validation Missclass,0.800000
+127,Train MSE,0.750450,validation MSE,0.821404,validation Missclass,0.650000
+128,Train MSE,0.751402,validation MSE,0.808358,validation Missclass,0.700000
+129,Train MSE,0.751299,validation MSE,0.808795,validation Missclass,0.600000
+130,Train MSE,0.753788,validation MSE,0.810913,validation Missclass,0.700000
+131,Train MSE,0.756363,validation MSE,0.825364,validation Missclass,0.700000
+132,Train MSE,0.756066,validation MSE,0.846740,validation Missclass,0.725000
+133,Train MSE,0.746105,validation MSE,0.812248,validation Missclass,0.700000
+134,Train MSE,0.750137,validation MSE,0.805257,validation Missclass,0.625000
+135,Train MSE,0.750809,validation MSE,0.847804,validation Missclass,0.725000
+136,Train MSE,0.745437,validation MSE,0.827816,validation Missclass,0.750000
+137,Train MSE,0.758288,validation MSE,0.841413,validation Missclass,0.750000
+138,Train MSE,0.746895,validation MSE,0.814786,validation Missclass,0.700000
+139,Train MSE,0.744647,validation MSE,0.827534,validation Missclass,0.625000
+140,Train MSE,0.747747,validation MSE,0.798658,validation Missclass,0.600000
+141,Train MSE,0.740800,validation MSE,0.811620,validation Missclass,0.675000
+142,Train MSE,0.744001,validation MSE,0.820875,validation Missclass,0.625000
+143,Train MSE,0.741049,validation MSE,0.807533,validation Missclass,0.700000
+144,Train MSE,0.741335,validation MSE,0.803605,validation Missclass,0.700000
+145,Train MSE,0.737147,validation MSE,0.801500,validation Missclass,0.600000
+146,Train MSE,0.745824,validation MSE,0.808527,validation Missclass,0.725000
+147,Train MSE,0.738879,validation MSE,0.817531,validation Missclass,0.650000
+148,Train MSE,0.746544,validation MSE,0.824729,validation Missclass,0.725000
+149,Train MSE,0.739906,validation MSE,0.830095,validation Missclass,0.650000
+150,Train MSE,0.768642,validation MSE,0.837641,validation Missclass,0.725000
+151,Train MSE,0.737954,validation MSE,0.795667,validation Missclass,0.625000
+152,Train MSE,0.737315,validation MSE,0.790516,validation Missclass,0.600000
+153,Train MSE,0.736830,validation MSE,0.825407,validation Missclass,0.650000
+154,Train MSE,0.736729,validation MSE,0.816477,validation Missclass,0.675000
+155,Train MSE,0.735277,validation MSE,0.809678,validation Missclass,0.675000
+156,Train MSE,0.733390,validation MSE,0.807448,validation Missclass,0.675000
+157,Train MSE,0.740743,validation MSE,0.831248,validation Missclass,0.625000
+158,Train MSE,0.729703,validation MSE,0.803372,validation Missclass,0.600000
+159,Train MSE,0.734832,validation MSE,0.804620,validation Missclass,0.625000
+160,Train MSE,0.736655,validation MSE,0.836702,validation Missclass,0.700000
+161,Train MSE,0.733308,validation MSE,0.800477,validation Missclass,0.625000
+162,Train MSE,0.734623,validation MSE,0.786672,validation Missclass,0.600000
+163,Train MSE,0.742177,validation MSE,0.834886,validation Missclass,0.700000
+164,Train MSE,0.728444,validation MSE,0.802261,validation Missclass,0.675000
+165,Train MSE,0.730174,validation MSE,0.799242,validation Missclass,0.625000
+166,Train MSE,0.725736,validation MSE,0.801618,validation Missclass,0.650000
+167,Train MSE,0.727902,validation MSE,0.791814,validation Missclass,0.650000
+168,Train MSE,0.738314,validation MSE,0.829970,validation Missclass,0.700000
+169,Train MSE,0.728659,validation MSE,0.806336,validation Missclass,0.700000
+170,Train MSE,0.735991,validation MSE,0.843222,validation Missclass,0.700000
+171,Train MSE,0.736248,validation MSE,0.812086,validation Missclass,0.650000
+172,Train MSE,0.724229,validation MSE,0.801792,validation Missclass,0.700000
+173,Train MSE,0.724171,validation MSE,0.792813,validation Missclass,0.650000
+174,Train MSE,0.726639,validation MSE,0.821857,validation Missclass,0.725000
+175,Train MSE,0.722762,validation MSE,0.796955,validation Missclass,0.650000
+176,Train MSE,0.746768,validation MSE,0.829638,validation Missclass,0.750000
+177,Train MSE,0.721453,validation MSE,0.793132,validation Missclass,0.650000
+Stopped because previousErrorWindow=0.66125 and currentErrorWindow=0.66625
+
+
+Accuracy on the training set: (does NOT imply the ability to generalize)
+happy: 15/22
+sad: 0/24
+angry: 11/23
+surprised: 21/25
+scared: 5/26
+disgusted: 11/20
+neutral: 0/20
+Set accuracy: 0.39375
+Confusion Matrix: 
+
+0: 5, 0, 0, 0, 5, 7, 9, 
+1: 3, 0, 0, 0, 4, 6, 7, 
+2: 5, 0, 0, 3, 7, 4, 5, 
+3: 2, 0, 0, 11, 8, 2, 0, 
+4: 0, 0, 0, 5, 11, 3, 1, 
+5: 1, 0, 0, 0, 1, 15, 5, 
+6: 0, 0, 0, 0, 1, 3, 21, 
+Attribute[0]:scared
+Attribute[1]:neutral
+Attribute[2]:sad
+Attribute[3]:angry
+Attribute[4]:disgusted
+Attribute[5]:happy
+Attribute[6]:surprised
+
+
+
+Accuracy on the test set:
+happy: 6/9
+sad: 0/7
+angry: 4/7
+surprised: 3/5
+scared: 1/6
+disgusted: 7/9
+neutral: 0/10
+Set accuracy: 0.396226
+Confusion Matrix: 
+
+0: 0, 0, 0, 3, 3, 0, 1, 
+1: 0, 0, 2, 3, 0, 5, 0, 
+2: 0, 0, 6, 0, 0, 2, 1, 
+3: 0, 0, 1, 1, 0, 4, 0, 
+4: 0, 0, 1, 0, 4, 0, 2, 
+5: 0, 0, 1, 1, 0, 3, 0, 
+6: 0, 0, 1, 0, 1, 0, 7, 
+Attribute[0]:sad
+Attribute[1]:neutral
+Attribute[2]:happy
+Attribute[3]:scared
+Attribute[4]:angry
+Attribute[5]:surprised
+Attribute[6]:disgusted
+
+
+Training time: 0.192191 seconds
+
+Testing time: 0.000209093 seconds

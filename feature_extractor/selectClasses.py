@@ -5,9 +5,11 @@
 #change it. We can make them command line parameters later if we want
 #Created by Nathan
 
-originalArffFile = open('output.arff','r')
-outputFile = open('outputHappySad.arff','w')
-desiredValues = ['happy','sad']
+import sys
+
+originalArffFile = open(sys.argv[1],'r')
+outputFile = open(sys.argv[2],'w')
+desiredValues = sys.argv[3:len(sys.argv)]
 
 originalLines = originalArffFile.readlines()
 

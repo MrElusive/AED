@@ -1,0 +1,98 @@
+Creating Backrop with 1 hidden layers and 20 hidden nodes per layer
+Learning rate:0.4
+Momentum:0
+Dataset name: ../feature_extractor/arffoutput/mitchell-hist-allk-10d.arff
+Number of instances (rows): 167
+Number of attributes (cols): 11
+Learning algorithm: backprop
+Evaluation method: random
+numOutputs = 7
+1,Train MSE,0.759130,validation MSE,0.770795,validation Missclass,0.870968
+2,Train MSE,0.833453,validation MSE,0.795535,validation Missclass,0.677419
+3,Train MSE,0.774669,validation MSE,0.755327,validation Missclass,0.709677
+4,Train MSE,0.775139,validation MSE,0.749994,validation Missclass,0.709677
+5,Train MSE,0.791217,validation MSE,0.762568,validation Missclass,0.677419
+6,Train MSE,0.755790,validation MSE,0.738377,validation Missclass,0.709677
+7,Train MSE,0.756192,validation MSE,0.748666,validation Missclass,0.677419
+8,Train MSE,0.754748,validation MSE,0.773790,validation Missclass,0.870968
+9,Train MSE,0.764732,validation MSE,0.808360,validation Missclass,0.870968
+10,Train MSE,0.749418,validation MSE,0.750387,validation Missclass,0.677419
+11,Train MSE,0.743877,validation MSE,0.752046,validation Missclass,0.774194
+12,Train MSE,0.764843,validation MSE,0.759366,validation Missclass,0.709677
+13,Train MSE,0.773141,validation MSE,0.784757,validation Missclass,0.677419
+14,Train MSE,0.748590,validation MSE,0.768586,validation Missclass,0.709677
+15,Train MSE,0.764630,validation MSE,0.814738,validation Missclass,0.870968
+16,Train MSE,0.739154,validation MSE,0.740140,validation Missclass,0.612903
+17,Train MSE,0.748354,validation MSE,0.783880,validation Missclass,0.935484
+18,Train MSE,0.762985,validation MSE,0.759271,validation Missclass,0.709677
+19,Train MSE,0.770535,validation MSE,0.780948,validation Missclass,0.677419
+20,Train MSE,0.746378,validation MSE,0.736802,validation Missclass,0.645161
+21,Train MSE,0.741207,validation MSE,0.738116,validation Missclass,0.645161
+22,Train MSE,0.737302,validation MSE,0.766703,validation Missclass,0.935484
+23,Train MSE,0.737284,validation MSE,0.737098,validation Missclass,0.709677
+24,Train MSE,0.736444,validation MSE,0.757441,validation Missclass,0.903226
+25,Train MSE,0.737052,validation MSE,0.742234,validation Missclass,0.677419
+26,Train MSE,0.735032,validation MSE,0.757424,validation Missclass,0.677419
+27,Train MSE,0.741144,validation MSE,0.787900,validation Missclass,0.870968
+28,Train MSE,0.738610,validation MSE,0.730521,validation Missclass,0.612903
+29,Train MSE,0.735756,validation MSE,0.769357,validation Missclass,0.774194
+30,Train MSE,0.730532,validation MSE,0.761009,validation Missclass,0.903226
+31,Train MSE,0.738860,validation MSE,0.754831,validation Missclass,0.709677
+32,Train MSE,0.729199,validation MSE,0.738446,validation Missclass,0.612903
+33,Train MSE,0.727721,validation MSE,0.757058,validation Missclass,0.677419
+34,Train MSE,0.751393,validation MSE,0.779332,validation Missclass,0.774194
+35,Train MSE,0.734719,validation MSE,0.777653,validation Missclass,0.806452
+36,Train MSE,0.726902,validation MSE,0.763118,validation Missclass,0.903226
+37,Train MSE,0.726493,validation MSE,0.752742,validation Missclass,0.838710
+38,Train MSE,0.734596,validation MSE,0.751040,validation Missclass,0.709677
+39,Train MSE,0.746679,validation MSE,0.746758,validation Missclass,0.709677
+40,Train MSE,0.733503,validation MSE,0.732091,validation Missclass,0.612903
+Stopped because previousErrorWindow=0.73871 and currentErrorWindow=0.753226
+
+
+Accuracy on the training set: (does NOT imply the ability to generalize)
+happy: 0/28
+sad: 6/34
+angry: 1/27
+surprised: 0/0
+scared: 0/0
+disgusted: 0/0
+neutral: 35/36
+Set accuracy: 0.336
+Confusion Matrix: 
+
+0: 1, 2, 24, 0, 
+1: 0, 6, 28, 0, 
+2: 0, 1, 35, 0, 
+3: 0, 2, 26, 0, 
+Attribute[0]:angry
+Attribute[1]:sad
+Attribute[2]:neutral
+Attribute[3]:happy
+
+
+
+Accuracy on the test set:
+happy: 0/15
+sad: 0/6
+angry: 1/15
+surprised: 0/0
+scared: 0/0
+disgusted: 0/0
+neutral: 4/6
+Set accuracy: 0.119048
+Confusion Matrix: 
+
+0: 0, 0, 13, 2, 
+1: 0, 1, 12, 2, 
+2: 0, 0, 4, 2, 
+3: 0, 0, 6, 0, 
+Attribute[0]:happy
+Attribute[1]:angry
+Attribute[2]:neutral
+Attribute[3]:sad
+
+
+Training time: 0.0569139 seconds
+
+Testing time: 0.000251055 seconds

@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include "rand.h"
 
-#define LEARNING_RATE   0.7
+#define LEARNING_RATE   0.4
 #define MOMENTUM        0
 
 using namespace std;
